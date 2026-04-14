@@ -1,0 +1,12 @@
+{
+  "HomePage": {
+    "title": "Welcome to Next.js",
+    "description": "The React Framework for the Web",
+    "cta": "Get Started"
+  },
+  "AboutPage": {
+    "title": "About",
+    "description": "About page",
+    "team": "Our Team"
+  }
+}
