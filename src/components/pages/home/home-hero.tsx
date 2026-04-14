@@ -1,7 +1,7 @@
 import type { HomeContent, HomeHero } from '@/src/types/home-content';
 import Img from '@/src/components/atoms/img';
 import { getContentSection } from '@/src/api/get-content-section';
-import {Link} from "@/src/i18n/navigation"
+import { Link } from '@/src/i18n/navigation';
 
 type Props = {
   data: HomeHero;
@@ -17,6 +17,7 @@ export default async function HomeHero({ data, endpoint, locale }: Props) {
     locale
   );
   const content = res.data.content[0];
+  console.log(content);
   return (
     <section className="relative min-h-screen overflow-hidden">
       <div className="absolute inset-0">
@@ -35,16 +36,18 @@ export default async function HomeHero({ data, endpoint, locale }: Props) {
         <div className="text-center px-6 max-w-5xl mx-auto">
           <span className="inline-block w-20 h-px bg-gold mb-6 mx-auto" />
           <p className="text-gold text-xs tracking-[0.5em] uppercase mb-8 font-light">
-            {content.subtitle}
+            {content.header.subtitle}
           </p>
 
           <h1 className="font-headline text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white font-light tracking-wide leading-[1.1] mb-10">
-            <span className="block whitespace-pre-line">{content.title}</span>
+            <span className="block whitespace-pre-line">
+              {content.header.title}
+            </span>
           </h1>
 
           <p className="text-white/70 text-lg md:text-xl font-light max-w-2xl mx-auto mb-14 leading-relaxed">
             <span className="block whitespace-pre-line">
-              {content.description}
+              {content.header.description}
             </span>
           </p>
 
