@@ -1,5 +1,5 @@
 import { StrapiEntity } from '@/src/types/strapi';
-import { Header, Img } from '@/src/types/shared';
+import { CTA, Header, Img } from '@/src/types/shared';
 
 export interface HomeHero {
   __component: 'home.home-hero';
@@ -8,15 +8,15 @@ export interface HomeHero {
   image: Img;
 }
 
-export interface HomePhilosophy {
-  __component: 'home.home-philosophy';
+export interface HomeAbout {
+  __component: 'home.home-about';
   id: number;
   header: Header;
   image: Img;
 }
 
-export interface HomeFeaturedRooms {
-  __component: 'home.home-featured-rooms';
+export interface HomeRooms {
+  __component: 'home.home-rooms';
   id: number;
   header: Header;
 }
@@ -33,20 +33,13 @@ export interface HomeTestimonials {
   header: Header;
 }
 
-export interface HomeGastronomy {
-  __component: 'home.home-gastronomy';
-  id: number;
-  header: Header;
-  image: Img;
-}
-
 export type HomeBlocks =
   | HomeHero
-  | HomePhilosophy
-  | HomeFeaturedRooms
+  | HomeAbout
+  | HomeRooms
   | HomeServices
   | HomeTestimonials
-  | HomeGastronomy;
+  | CTA;
 
 export type HomeContent = StrapiEntity<{
   content: HomeBlocks[];

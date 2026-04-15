@@ -14,5 +14,7 @@ export type StrapiEntity<T> = {
 
 export interface StrapiMedia {
   url: string;
-  formats?: Record<string, { url: string }>;
+  width?: number;
+  height?: number;
+  formats?: Record<string, { url: string; width?: number; height?: number }>;
 }

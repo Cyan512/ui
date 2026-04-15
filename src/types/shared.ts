@@ -10,3 +10,9 @@ export interface Header {
   subtitle: string;
   description: string;
 }
+
+export interface CTA {
+  __component: 'shared.section-cta';
+  id: number;
+  header: Header;
+}

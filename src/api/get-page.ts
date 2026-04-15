@@ -8,6 +8,9 @@ export async function getPage<T>(
   const res = await fetch(
     `${environment.strapi.apiEndpoint}/api/${endpoint}?populate=*&locale=${locale}`,
     {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
       next: { revalidate: 0 },
     }
   );
