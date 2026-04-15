@@ -3,15 +3,27 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-primary: #c0573e;
-  --color-secondary: #d4a373;
-  --color-tertiary: #2e5d82;
-  --color-neutral: #5d5e5f;
-  --color-cream: #faf8f5;
-  --color-charcoal: #2c2c2c;
-  --color-gold: #c9a962;
+  --color-primary: #C0573E;
+  --color-secondary: #D4A373;
+  --color-tertiary: #2E5D82;
+  --color-neutral: #5D5E5F;
+  --color-cream: #FAF8F5;
+  --color-charcoal: #2C2C2C;
+  --color-gold: #C9A962;
 
   --font-headline: 'Cormorant Garamond', serif;
   --font-body: 'Inter', sans-serif;
   --font-label: 'Inter', sans-serif;
+}
+
+.testimonials-swiper .swiper-pagination {
+  @apply mt-12 relative;
+}
+
+.testimonials-swiper .swiper-pagination-bullet {
+  @apply w-2 h-2 bg-white/40 transition-all duration-300;
+}
+
+.testimonials-swiper .swiper-pagination-bullet-active {
+  @apply bg-gold w-8 rounded;
 }

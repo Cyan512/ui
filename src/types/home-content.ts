@@ -1,5 +1,6 @@
 import { StrapiEntity } from '@/src/types/strapi';
 import { CTA, Header, Img } from '@/src/types/shared';
+import { TestimonialEntity } from '@/src/types/testimonial.entity';
 
 export interface HomeHero {
   __component: 'home.home-hero';
@@ -31,6 +32,7 @@ export interface HomeTestimonials {
   __component: 'home.home-testimonials';
   id: number;
   header: Header;
+  testimonials: TestimonialEntity[];
 }
 
 export type HomeBlocks =

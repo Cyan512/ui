@@ -6,7 +6,6 @@ interface Props {
   data: HomeHero;
 }
 export default function Hero({ data }: Props): JSX.Element {
-  console.log(data);
   return (
     <section>
       {data.header.title}

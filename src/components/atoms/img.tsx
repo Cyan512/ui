@@ -7,8 +7,9 @@ import environment from '@/src/environment';
 type ImgProps = {
   strapiUrl?: string | null;
   alt: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
+  fill?: boolean;
   fallback?: string;
   className?: string;
   loading?: 'eager' | 'lazy';
@@ -19,6 +20,7 @@ export default function Img({
   alt,
   width,
   height,
+  fill = false,
   fallback = '/placeholder.svg',
   className,
   loading = 'lazy',
@@ -43,8 +45,7 @@ export default function Img({
     <Image
       src={imgSrc}
       alt={alt}
-      width={width}
-      height={height}
+      {...(fill ? { fill: true } : { width: width!, height: height! })}
       className={className}
       unoptimized={isStrapi}
       loading={loading}
