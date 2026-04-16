@@ -15,4 +15,11 @@ export interface CTA {
   __component: 'shared.section-cta';
   id: number;
   header: Header;
+  link: Link;
+}
+
+export interface Link {
+  id: number;
+  url: string;
+  label: string;
 }

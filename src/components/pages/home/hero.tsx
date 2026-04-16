@@ -2,6 +2,7 @@ import { HomeHero } from '@/src/types/home-content';
 import { JSX } from 'react';
 import Img from '@/src/components/atoms/img';
 import { Link } from '@/src/i18n/navigation';
+import { Button } from '@/src/components/atoms/button';
 interface Props {
   data: HomeHero;
 }
@@ -26,20 +27,22 @@ export default function Hero({ data }: Props): JSX.Element {
               {data.header.subtitle}
             </p>
           </div>
-
           <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white font-light tracking-wide leading-[1.1] mb-6 md:mb-10">
             <span className="block whitespace-pre-line">
               {data.header.title}
             </span>
           </h1>
-
           <p className="text-white/70 text-base md:text-lg lg:text-xl font-light max-w-2xl mx-auto mb-10 md:mb-14 leading-relaxed">
             <span className="block whitespace-pre-line">
               {data.header.description}
             </span>
           </p>
-
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            {data.links.map((link) => (
+              <Button key={link.id} href={link.url}>
+                {link.label}
+              </Button>
+            ))}
             <Link
               href="/rooms"
               className="group px-14 py-5 bg-gold hover:bg-[#B89952] text-white text-xs tracking-[0.2em] uppercase transition-all duration-500 relative overflow-hidden"
