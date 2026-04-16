@@ -1,14 +1,20 @@
 import { StrapiMedia } from '@/src/types/strapi';
 
+export interface Header {
+  title: string;
+  subtitle: string;
+  description: string;
+}
+
 export interface Img {
   src: StrapiMedia;
   alt: string;
 }
 
-export interface Header {
-  title: string;
-  subtitle: string;
-  description: string;
+export interface Link {
+  id: number;
+  url: string;
+  label: string;
 }
 
 export interface CTA {
@@ -18,8 +24,16 @@ export interface CTA {
   link: Link;
 }
 
-export interface Link {
+export interface Hero {
+  __component: 'shared.section-hero';
   id: number;
-  url: string;
+  header: Header;
+  image: Img;
+}
+
+export interface Stats {
+  id: number;
   label: string;
+  more: boolean;
+  value: string;
 }

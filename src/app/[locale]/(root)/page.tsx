@@ -1,4 +1,3 @@
-import SectionCta from '@/src/components/pages/section-cta';
 import { setRequestLocale } from 'next-intl/server';
 import { getPage } from '@/src/api/get-page';
 import { CTA } from '@/src/types/shared';
@@ -18,6 +17,7 @@ import {
   Services,
   Testimonials,
 } from '@/src/components/pages/home';
+import { SectionCTA } from '@/src/components/pages';
 
 function renderComponent(component: HomeBlocks, index: number) {
   const key = `${component.id}-${index}`;
@@ -33,7 +33,7 @@ function renderComponent(component: HomeBlocks, index: number) {
     case 'home.home-testimonials':
       return <Testimonials key={key} data={component as HomeTestimonials} />;
     case 'shared.section-cta':
-      return <SectionCta key={key} data={component as CTA} />;
+      return <SectionCTA key={key} data={component as CTA} />;
     default:
       return null;
   }

@@ -1,0 +1,36 @@
+import { setRequestLocale } from 'next-intl/server';
+import { getPage } from '@/src/api/get-page';
+import { SectionCTA, SectionHero } from '@/src/components/pages';
+import { CTA, Hero } from '@/src/types/shared';
+import { GalleryBlocks, GalleryContent } from '@/src/types/gallery-content';
+
+function renderComponent(component: GalleryBlocks, index: number) {
+  const key = `${component.id}-${index}`;
+  switch (component.__component) {
+    case 'shared.section-hero':
+      return <SectionHero key={key} data={component as Hero} />;
+    case 'shared.section-cta':
+      return <SectionCTA key={key} data={component as CTA} />;
+    default:
+      return null;
+  }
+}
+
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function Gallery({ params }: Props) {
+  const endpoint = 'gallery';
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const res = await getPage<GalleryContent>(endpoint, locale);
+  const content = res.data.content;
+  return (
+    <div className="min-h-screen bg-cream">
+      {content.map((component: GalleryBlocks, index: number) =>
+        renderComponent(component, index)
+      )}
+    </div>
+  );
+}

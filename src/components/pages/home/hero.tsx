@@ -3,6 +3,7 @@ import { JSX } from 'react';
 import Img from '@/src/components/atoms/img';
 import { Link } from '@/src/i18n/navigation';
 import { Button } from '@/src/components/atoms/button';
+
 interface Props {
   data: HomeHero;
 }

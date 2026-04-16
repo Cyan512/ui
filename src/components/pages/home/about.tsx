@@ -14,7 +14,7 @@ export default function About({ data }: Props): JSX.Element {
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div className="relative">
-            <div className="aspect-4/5 bg-linear-to-br from-[#D4A373]/20 to-[#C0573E]/10 relative overflow-hidden">
+            <div className="aspect-4/5 bg-linear-to-br from-secondary/20 to-primary/10 relative overflow-hidden">
               <Img
                 strapiUrl={data.image.src.url}
                 alt={data.image.alt}

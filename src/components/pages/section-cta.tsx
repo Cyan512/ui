@@ -5,7 +5,7 @@ import Heading from '@/src/components/atoms/heading';
 interface Props {
   data: CTA;
 }
-export default function SectionCta({ data }: Props) {
+export default function SectionCTA({ data }: Props) {
   return (
     <section className="py-32 lg:py-40 bg-charcoal relative overflow-hidden">
       <div className="absolute inset-0">

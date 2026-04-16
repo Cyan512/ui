@@ -32,6 +32,8 @@ export default function Img({
       : `${environment.strapi.apiEndpoint}${strapiUrl}`;
   });
 
+  const altText = alt || 'Image';
+
   const isStrapi =
     imgSrc.includes('localhost:1337') || imgSrc.includes('192.168.1.36:1337');
 
@@ -44,7 +46,7 @@ export default function Img({
   return (
     <Image
       src={imgSrc}
-      alt={alt}
+      alt={altText}
       {...(fill ? { fill: true } : { width: width!, height: height! })}
       className={className}
       unoptimized={isStrapi}
