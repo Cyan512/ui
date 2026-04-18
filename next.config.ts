@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         port: STRAPI_PORT,
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cms-aw1k.onrender.com',
+        pathname: '/uploads/**',
+      },
     ],
   },
 };
