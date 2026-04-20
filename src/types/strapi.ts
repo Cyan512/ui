@@ -12,9 +12,45 @@ export type StrapiEntity<T> = {
   locale: string;
 } & T;
 
-export interface StrapiMedia {
+export interface StrapiMediaFormat {
+  ext: string;
   url: string;
-  width?: number;
-  height?: number;
-  formats?: Record<string, { url: string; width?: number; height?: number }>;
+  hash: string;
+  mime: string;
+  name: string;
+  path: string | null;
+  size: number;
+  width: number;
+  height: number;
+  sizeInBytes: number;
+}
+
+export interface StrapiMediaFormats {
+  thumbnail?: StrapiMediaFormat;
+  small?: StrapiMediaFormat;
+  medium?: StrapiMediaFormat;
+  large?: StrapiMediaFormat;
+}
+
+export interface StrapiMedia {
+  id: number;
+  documentId: string;
+  name: string;
+  alternativeText: string | null;
+  caption: string | null;
+  focalPoint: unknown | null;
+  width: number;
+  height: number;
+  formats?: StrapiMediaFormats;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: unknown | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
 }

@@ -1,8 +1,11 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getPage } from '@/src/api/get-page';
 import { SectionCTA, SectionHero } from '@/src/components/pages';
-import { CTA, Hero } from '@/src/types/shared';
-import { GalleryBlocks, GalleryContent } from '@/src/types/gallery-content';
+import { SectionCTA as CTA, SectionHero as Hero } from '@/src/types/shared';
+import {
+  GalleryBlocks,
+  GalleryContent,
+} from '@/src/types/page-content/gallery-content';
 
 function renderComponent(component: GalleryBlocks, index: number) {
   const key = `${component.id}-${index}`;

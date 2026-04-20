@@ -1,16 +1,16 @@
-import { HomeServices } from '@/src/types/home-content';
+import { HomeServices } from '@/src/types/page-content/home-content';
 import { JSX } from 'react';
-import Heading from '@/src/components/atoms/heading';
+import { Button } from '@/src/components/atoms/button';
 
 interface Props {
   data: HomeServices;
 }
 export default function Services({ data }: Props): JSX.Element {
   return (
-    <section className="py-32 lg:py-40 bg-cream">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <Heading header={data.header} />
-      </div>
+    <section>
+      {data.title}
+      {data.subtitle}
+      <Button link={data.link} />
     </section>
   );
 }

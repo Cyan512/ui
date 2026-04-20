@@ -1,10 +1,14 @@
-import { CTA, Header, Hero, Img, Stats } from '@/src/types/shared';
+import {
+  SectionCTA as CTA,
+  SectionHero as Hero,
+  Img,
+  Stats,
+} from '@/src/types/shared';
 import { StrapiEntity } from '@/src/types/strapi';
 
 export interface AboutStory {
   __component: 'about.about-story';
   id: number;
-  header: Header;
   image: Img;
   stats: Stats[];
   values: Stats[];

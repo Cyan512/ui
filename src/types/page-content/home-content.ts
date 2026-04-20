@@ -1,11 +1,13 @@
 import { StrapiEntity } from '@/src/types/strapi';
-import { CTA, Header, Img, Link } from '@/src/types/shared';
+import { SectionCTA, Img, Link } from '@/src/types/shared';
 import { TestimonialEntity } from '@/src/types/testimonial.entity';
 
 export interface HomeHero {
   __component: 'home.home-hero';
   id: number;
-  header: Header;
+  title: string;
+  subtitle: string;
+  description: string;
   image: Img;
   links: Link[];
 }
@@ -13,7 +15,9 @@ export interface HomeHero {
 export interface HomeAbout {
   __component: 'home.home-about';
   id: number;
-  header: Header;
+  title: string;
+  subtitle: string;
+  description: string;
   image: Img;
   link: Link;
 }
@@ -21,21 +25,24 @@ export interface HomeAbout {
 export interface HomeRooms {
   __component: 'home.home-rooms';
   id: number;
-  header: Header;
+  title: string;
+  subtitle: string;
   link: Link;
 }
 
 export interface HomeServices {
   __component: 'home.home-services';
   id: number;
-  header: Header;
+  title: string;
+  subtitle: string;
   link: Link;
 }
 
 export interface HomeTestimonials {
   __component: 'home.home-testimonials';
   id: number;
-  header: Header;
+  title: string;
+  subtitle: string;
   testimonials: TestimonialEntity[];
   link: Link;
 }
@@ -46,7 +53,7 @@ export type HomeBlocks =
   | HomeRooms
   | HomeServices
   | HomeTestimonials
-  | CTA;
+  | SectionCTA;
 
 export type HomeContent = StrapiEntity<{
   content: HomeBlocks[];

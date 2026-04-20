@@ -1,15 +1,15 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getPage } from '@/src/api/get-page';
-import { CTA } from '@/src/types/shared';
 import {
-  HomeAbout,
   HomeBlocks,
   HomeContent,
   HomeHero,
+  HomeAbout,
   HomeRooms,
   HomeServices,
   HomeTestimonials,
-} from '@/src/types/home-content';
+} from '@/src/types/page-content/home-content';
+import { SectionCTA as CTA } from '@/src/types/shared';
 import {
   About,
   Hero,
@@ -44,16 +44,16 @@ type Props = {
 };
 
 export default async function Home({ params }: Props) {
-  const endpoint = 'home';
+  const endpoint = 'home-page';
   const { locale } = await params;
   setRequestLocale(locale);
   const res = await getPage<HomeContent>(endpoint, locale);
   const content = res.data.content;
   return (
-    <div className="min-h-screen bg-cream">
+    <>
       {content.map((component: HomeBlocks, index: number) =>
         renderComponent(component, index)
       )}
-    </div>
+    </>
   );
 }

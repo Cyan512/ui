@@ -5,86 +5,47 @@ import { routing } from '@/src/i18n/routing';
 import { useLocale } from 'next-intl';
 import React, { ReactNode } from 'react';
 import { FaArrowRightLong } from 'react-icons/fa6';
+import { Link as SharedLink } from '@/src/types/shared';
 
-const buttonVariants = cva(
-  'inline-flex items-center gap-2 text-xs font-medium tracking-[0.2em] uppercase transition-colors',
-  {
-    variants: {
-      variant: {
-        primary: 'bg-pg0 text-tx hover:bg-pg0/90 px-10 py-4 justify-center',
-        secondary:
-          'border border-pg0/30 text-pg0 hover:bg-pg0/10 px-10 py-4 justify-center',
-        link: 'border-b border-tx/20 pb-1 hover:gap-4 transition-all',
-        dark: 'bg-tx text-pg0 hover:bg-tx/90 px-10 py-4 justify-center',
-      },
-    },
-    defaultVariants: {
-      variant: 'primary',
-    },
-  }
-);
-
-type ButtonVariant = VariantProps<typeof buttonVariants>['variant'];
-
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
-  variant?: ButtonVariant;
-  href?: string;
-  showArrow?: boolean;
+interface Props {
+  link: SharedLink;
+  className?: string;
 }
 
-export function Button({
-  children,
-  variant = 'primary',
-  href,
-  className,
-  onClick,
-  type = 'button',
-  disabled,
-  showArrow = true,
-  ...props
-}: ButtonProps) {
+const buttonVariants = cva('', {
+  variants: {
+    variant: {
+      primary: '',
+      secondary: '',
+      link: '',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+  },
+});
+
+export function Button({ link, className }: Props) {
+  const { text, url, isExternal, type } = link;
   const locale = useLocale();
-
-  const combinedStyles = cn(buttonVariants({ variant }), className);
-
-  const content = (
-    <>
-      {children}
-      {variant === 'link' && showArrow && <FaArrowRightLong size={14} />}
-    </>
-  );
-
-  if (href) {
-    const isExternal = href.startsWith('http') || href.startsWith('www');
-    const isAnchor = href.startsWith('#');
-    const isLocalePath = routing.locales.some(
-      (l: string) => href === `/${l}` || href.startsWith(`/${l}/`)
-    );
-
-    let finalHref = href;
-    if (!isExternal && !isAnchor && !isLocalePath) {
-      if (!href.startsWith('/')) {
-        finalHref = `/${href}`;
-      }
-    }
-
+  if (isExternal) {
     return (
-      <Link href={finalHref} className={combinedStyles}>
-        {content}
-      </Link>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cn(buttonVariants({ variant: type }), className)}
+      >
+        {text}
+      </a>
     );
   }
-
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={combinedStyles}
-      {...props}
+    <Link
+      href={url}
+      className={cn(buttonVariants({ variant: type }), className)}
     >
-      {content}
-    </button>
+      {text}
+    </Link>
   );
 }

@@ -1,63 +1,60 @@
-'use client';
-
-import Image from 'next/image';
-import { useState } from 'react';
+import NextImage from 'next/image';
+import { cn } from '@/src/lib/cn';
+import { Img as SharedImage } from '@/src/types/shared';
 import environment from '@/src/environment';
 
-type ImgProps = {
-  strapiUrl?: string | null;
-  alt: string;
-  width?: number;
-  height?: number;
-  fill?: boolean;
-  fallback?: string;
+interface Props {
+  image: SharedImage | null;
   className?: string;
-  loading?: 'eager' | 'lazy';
-};
+  priority?: boolean;
+  fill?: boolean;
+  sizes?: string;
+}
 
 export default function Img({
-  strapiUrl,
-  alt,
-  width,
-  height,
-  fill = false,
-  fallback = '/placeholder.svg',
+  image,
   className,
-  loading = 'lazy',
-}: ImgProps) {
-  const [imgSrc, setImgSrc] = useState(() => {
-    if (!strapiUrl || typeof strapiUrl !== 'string') return fallback;
-    return strapiUrl.startsWith('http')
-      ? strapiUrl
-      : `${environment.strapi.apiEndpoint}${strapiUrl}`;
-  });
+  priority = false,
+  fill = false,
+  sizes,
+}: Props) {
+  if (!image || !image.src?.url) return null;
 
-  const altText = alt || 'Image';
+  const bestFormat =
+    image.src.formats?.large?.url ||
+    image.src.formats?.medium?.url ||
+    image.src.formats?.small?.url ||
+    image.src.url;
 
-  const isStrapi =
-    imgSrc.includes('localhost:1337') || imgSrc.includes('192.168.1.36:1337');
+  const src = bestFormat.startsWith('http')
+    ? bestFormat
+    : `${environment.strapi.apiEndpoint}${bestFormat}`;
 
-  const handleError = () => {
-    if (imgSrc !== fallback) {
-      setImgSrc(fallback);
-    }
-  };
+  const alt =
+    image.alt || image.src.alternativeText || image.src.name || 'image';
+
+  if (fill) {
+    return (
+      <NextImage
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        sizes={sizes ?? '100vw'}
+        className={cn(className)}
+      />
+    );
+  }
 
   return (
-    <Image
-      src={imgSrc}
-      alt={altText}
-      {...(fill ? { fill: true } : { width: width!, height: height! })}
-      className={className}
-      unoptimized={isStrapi}
-      loading={loading}
-      onError={handleError}
-      onLoad={(e) => {
-        const img = e.target as HTMLImageElement;
-        if (img.naturalWidth === 0) {
-          handleError();
-        }
-      }}
+    <NextImage
+      src={src}
+      alt={alt}
+      width={image.src.width}
+      height={image.src.height}
+      priority={priority}
+      sizes={sizes}
+      className={cn(className)}
     />
   );
 }

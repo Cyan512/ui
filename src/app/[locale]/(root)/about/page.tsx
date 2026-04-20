@@ -1,11 +1,11 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getPage } from '@/src/api/get-page';
-import { CTA, Hero } from '@/src/types/shared';
+import { SectionCTA as CTA, SectionHero as Hero } from '@/src/types/shared';
 import {
   AboutBlocks,
   AboutContent,
   AboutStory,
-} from '@/src/types/about-content';
+} from '@/src/types/page-content/about-content';
 import { Story } from '@/src/components/pages/about';
 import { SectionHero, SectionCTA } from '@/src/components/pages';
 
