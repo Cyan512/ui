@@ -1,4 +1,4 @@
-import { TestimonialEntity } from '@/src/types/testimonial.entity';
+import { TestimonialEntity } from '@/src/types/entitys/testimonial.entity';
 import { FaStar } from 'react-icons/fa';
 import { JSX } from 'react';
 

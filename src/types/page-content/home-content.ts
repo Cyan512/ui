@@ -1,6 +1,7 @@
 import { StrapiEntity } from '@/src/types/strapi';
 import { SectionCTA, Img, Link } from '@/src/types/shared';
-import { TestimonialEntity } from '@/src/types/testimonial.entity';
+import { TestimonialEntity } from '@/src/types/entitys/testimonial.entity';
+import { ServicelEntity } from '@/src/types/entitys/service.entity';
 
 export interface HomeHero {
   __component: 'home.home-hero';
@@ -35,6 +36,7 @@ export interface HomeServices {
   id: number;
   title: string;
   subtitle: string;
+  services: ServicelEntity[];
   link: Link;
 }
 
