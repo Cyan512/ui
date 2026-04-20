@@ -52,14 +52,15 @@ export default function Location({ data }: Props) {
             </div>
           </div>
           <div className="relative">
-            <div className="aspect-4/3 overflow-hidden">
-              <Img
-                image={data.image}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            <iframe
+              src={data.googleMapsUrl}
+              className="w-full h-full min-h-100"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Ubicación"
+            />
           </div>
         </div>
       </Container>

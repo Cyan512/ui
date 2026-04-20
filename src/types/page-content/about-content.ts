@@ -31,7 +31,8 @@ export interface AboutLocation {
   subtitle: string;
   description: string;
   address: string;
-  image: Img;
+  image?: Img;
+  googleMapsUrl?: string;
 }
 export type AboutBlocks =
   | Hero
