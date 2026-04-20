@@ -36,3 +36,50 @@ export interface Value {
   title: string;
   description: string;
 }
+
+export interface ServiceItem {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface FeaturedService {
+  id: number;
+  title: string;
+  description: string;
+  image: Img;
+  icon: string;
+}
+
+export interface GuestExperienceItem {
+  id: number;
+  title: string;
+  description: string;
+  image: Img;
+}
+
+export interface FAQItem {
+  id: number;
+  question: string;
+  answer: string;
+}
+
+export interface GalleryCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface GalleryImage {
+  id: number;
+  image: Img;
+  category: string;
+}
+
+export interface Social {
+  id: number;
+  platform: string;
+  url: string;
+  icon: string;
+}

@@ -1,9 +1,4 @@
-import {
-  SectionHero as Hero,
-  Img,
-  SectionCTA,
-  Value,
-} from '@/src/types/shared';
+import { SectionHero as Hero, SectionCTA, Value } from '@/src/types/shared';
 import { StrapiEntity } from '@/src/types/strapi';
 
 export interface AboutHistory {
