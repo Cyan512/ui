@@ -1,0 +1,70 @@
+[
+  {
+    "__component": "shared.section-hero",
+    "id": 1,
+    "title": "Sobre Nosotros",
+    "subtitle": "Conoce nuestra historia y valores",
+    "image": {
+      "src": "url-to-image",
+      "alt": "Imagen de empresa"
+    }
+  },
+  {
+    "__component": "about.about-history",
+    "id": 2,
+    "title": "Nuestra Historia",
+    "subtitle": "Más de 10 años de experiencia",
+    "description": "Descripción detallada de la historia de la empresa...",
+    "year": "2015"
+  },
+  {
+    "__component": "about.about-philosophy",
+    "id": 3,
+    "title": "Nuestra Filosofía",
+    "subtitle": "Lo que nos define",
+    "description": "Descripción de la filosofía empresarial...",
+    "values": [
+      {
+        "id": 1,
+        "title": "Innovación",
+        "description": "Siempre buscando nuevas soluciones"
+      },
+      {
+        "id": 2,
+        "title": "Calidad",
+        "description": "Compromiso con la excelencia"
+      },
+      {
+        "id": 3,
+        "title": "Sostenibilidad",
+        "description": "Cuidamos el medio ambiente"
+      }
+    ]
+  },
+  {
+    "__component": "about.about-location",
+    "id": 4,
+    "title": "Nuestra Ubicación",
+    "subtitle": "Donde encontrarnos",
+    "description": "Descripción de la ubicación...",
+    "address": "Calle Principal 123, Ciudad, País",
+    "image": {
+      "src": "url-to-image",
+      "alt": "Mapa o edificio"
+    }
+  },
+  {
+    "__component": "shared.section-cta",
+    "id": 5,
+    "title": "¿Listo para trabajar juntos?",
+    "subtitle": "Contáctanos hoy",
+    "description": "Estamos listos para ayudarte a lograr tus objetivos.",
+    "link": {
+      "id": 1,
+      "text": "Contactar",
+      "url": "/contact",
+      "isExternal": false,
+      "type": "primary"
+    }
+  }
+]

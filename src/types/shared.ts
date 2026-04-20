@@ -31,9 +31,8 @@ export interface SectionHero {
   image: Img;
 }
 
-export interface Stats {
+export interface Value {
   id: number;
-  label: string;
-  more: boolean;
-  value: string;
+  title: string;
+  description: string;
 }

@@ -1,0 +1,183 @@
+[
+  {
+    "variant": "primary",
+    "children": "Click me",
+    "type": "button"
+  },
+  {
+    "variant": "primary",
+    "children": "Primary Action",
+    "type": "button"
+  },
+  {
+    "variant": "secondary",
+    "children": "Learn more",
+    "type": "button"
+  },
+  {
+    "variant": "link",
+    "children": "Read more",
+    "showArrow": true,
+    "type": "button"
+  },
+  {
+    "variant": "link",
+    "children": "Sin flecha",
+    "showArrow": false,
+    "type": "button"
+  },
+  {
+    "variant": "dark",
+    "children": "Dark Button",
+    "type": "button"
+  },
+  {
+    "children": "Submit",
+    "type": "button"
+  },
+  {
+    "variant": "secondary",
+    "children": "Cancel",
+    "type": "button"
+  },
+  {
+    "children": "Click me",
+    "onClick": "handler_function",
+    "type": "button"
+  },
+  {
+    "children": "Disabled",
+    "disabled": true,
+    "type": "button"
+  },
+  {
+    "children": "Enviar formulario",
+    "type": "submit"
+  },
+  {
+    "className": "w-full mt-4",
+    "children": "Full width",
+    "type": "button"
+  },
+  {
+    "children": "✕",
+    "aria-label": "Cerrar modal",
+    "type": "button"
+  },
+  {
+    "href": "about",
+    "children": "About us",
+    "type": "link"
+  },
+  {
+    "href": "contact",
+    "children": "Contact",
+    "type": "link"
+  },
+  {
+    "href": "/products",
+    "children": "Ver productos",
+    "type": "link"
+  },
+  {
+    "href": "/en/about",
+    "children": "About (EN)",
+    "type": "link"
+  },
+  {
+    "href": "/es/contacto",
+    "children": "Contacto (ES)",
+    "type": "link"
+  },
+  {
+    "href": "https://google.com",
+    "children": "Google",
+    "type": "external"
+  },
+  {
+    "href": "www.github.com",
+    "children": "GitHub",
+    "type": "external"
+  },
+  {
+    "href": "#features",
+    "children": "Jump to features",
+    "type": "anchor"
+  },
+  {
+    "href": "#contact-form",
+    "children": "Go to form",
+    "type": "anchor"
+  },
+  {
+    "variant": "link",
+    "children": "Continue reading",
+    "type": "button"
+  },
+  {
+    "variant": "link",
+    "children": "No arrow",
+    "showArrow": false,
+    "type": "button"
+  },
+  {
+    "children": "Download",
+    "icon": "download",
+    "type": "button"
+  },
+  {
+    "children": "Precio $99",
+    "type": "button"
+  },
+  {
+    "variant": "link",
+    "children": "Ver todos los productos",
+    "icon": "chevron-right",
+    "type": "link"
+  },
+  {
+    "children": "Enviar",
+    "type": "submit"
+  },
+  {
+    "children": "Limpiar",
+    "type": "reset"
+  },
+  {
+    "children": "Guardar",
+    "name": "action",
+    "value": "save",
+    "type": "submit"
+  },
+  {
+    "children": "Eliminar",
+    "name": "action",
+    "value": "delete",
+    "type": "submit"
+  },
+  {
+    "children": "Disabled with handler",
+    "disabled": true,
+    "onClick": "handler_function",
+    "type": "button"
+  },
+  {
+    "href": "/page",
+    "children": "Enlace estilizado",
+    "className": "mt-8 hover:scale-105",
+    "type": "link"
+  },
+  {
+    "variant": "link",
+    "href": "/page",
+    "children": "Simple link style",
+    "showArrow": false,
+    "type": "link"
+  },
+  {
+    "variant": "link",
+    "href": "/blog",
+    "children": "Read article",
+    "type": "link"
+  }
+]

@@ -1,17 +1,31 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getPage } from '@/src/api/get-page';
-import { SectionHero as Hero } from '@/src/types/shared';
+import { SectionHero as Hero, SectionCTA as CTA } from '@/src/types/shared';
 import {
   AboutBlocks,
   AboutContent,
+  AboutPhilosophy as Philosophy,
+  AboutHistory as History,
+  AboutLocation as Location,
 } from '@/src/types/page-content/about-content';
-import { SectionHero } from '@/src/components/pages';
+import { SectionHero, SectionCTA } from '@/src/components/pages';
+import AboutHistory from '@/src/components/pages/about/history';
+import AboutPhilosophy from '@/src/components/pages/about/philosophy';
+import AboutLocation from '@/src/components/pages/about/location';
 
 function renderComponent(component: AboutBlocks, index: number) {
   const key = `${component.id}-${index}`;
   switch (component.__component) {
     case 'shared.section-hero':
       return <SectionHero key={key} data={component as Hero} />;
+    case 'about.about-history':
+      return <AboutHistory key={key} data={component as History} />;
+    case 'about.about-philosophy':
+      return <AboutPhilosophy key={key} data={component as Philosophy} />;
+    case 'about.about-location':
+      return <AboutLocation key={key} data={component as Location} />;
+    case 'shared.section-cta':
+      return <SectionCTA key={key} data={component as CTA} />;
     default:
       return null;
   }
