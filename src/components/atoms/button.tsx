@@ -12,18 +12,22 @@ interface Props {
   className?: string;
 }
 
-const buttonVariants = cva('', {
-  variants: {
-    variant: {
-      primary: '',
-      secondary: '',
-      link: '',
+const buttonVariants = cva(
+  'inline-flex items-center justify-center gap-2 px-8 py-4 font-body text-sm tracking-wider transition-all duration-300',
+  {
+    variants: {
+      variant: {
+        primary: 'bg-primary text-cream hover:bg-primary/90',
+        secondary:
+          'bg-transparent border border-cream text-cream hover:bg-cream hover:text-charcoal',
+        link: 'text-gold hover:text-cream underline-offset-4 hover:underline',
+      },
     },
-  },
-  defaultVariants: {
-    variant: 'primary',
-  },
-});
+    defaultVariants: {
+      variant: 'primary',
+    },
+  }
+);
 
 export function Button({ link, className }: Props) {
   const { text, url, isExternal, type } = link;
