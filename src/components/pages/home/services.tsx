@@ -51,10 +51,12 @@ export default function Services({ data }: Props): JSX.Element {
           }}
           className="testimonials-swiper"
         >
-          {data.services.map((service) => (
-            <SwiperSlide key={service.id}>
-              <ServiceCard data={service} />
-            </SwiperSlide>
+          {data.services?.map((service) => (
+            service?.title ? (
+              <SwiperSlide key={service.id}>
+                <ServiceCard data={service} />
+              </SwiperSlide>
+            ) : null
           ))}
         </Swiper>
       </Container>

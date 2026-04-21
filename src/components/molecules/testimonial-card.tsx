@@ -3,10 +3,14 @@ import { FaStar } from 'react-icons/fa';
 import { JSX } from 'react';
 
 interface Props {
-  data: TestimonialEntity;
+  data: TestimonialEntity | null | undefined;
 }
 
 export default function TestimonialCard({ data }: Props): JSX.Element {
+  if (!data || !data.text) {
+    return <></>;
+  }
+
   return (
     <div className="h-full p-8 bg-white/5">
       <div className="flex gap-1 mb-6">

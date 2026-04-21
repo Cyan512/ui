@@ -51,10 +51,12 @@ export default function Testimonials({ data }: Props): JSX.Element {
           }}
           className="testimonials-swiper"
         >
-          {data.testimonials.map((testimonial) => (
-            <SwiperSlide key={testimonial.id}>
-              <TestimonialCard data={testimonial} />
-            </SwiperSlide>
+          {data.testimonials?.map((testimonial) => (
+            testimonial?.text ? (
+              <SwiperSlide key={testimonial.id}>
+                <TestimonialCard data={testimonial} />
+              </SwiperSlide>
+            ) : null
           ))}
         </Swiper>
       </Container>
