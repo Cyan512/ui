@@ -8,7 +8,6 @@ const STRAPI_HOST = process.env.NEXT_PUBLIC_STRAPI_HOST || 'localhost';
 const STRAPI_PORT = process.env.NEXT_PUBLIC_STRAPI_PORT || '1337';
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
   images: {
     dangerouslyAllowLocalIP: true,
     remotePatterns: [
@@ -20,6 +19,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'cms-aw1k.onrender.com',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'strapi.hostal-korikallpa.com',
         pathname: '/uploads/**',
       },
     ],
