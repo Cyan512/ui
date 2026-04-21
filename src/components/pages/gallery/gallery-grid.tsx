@@ -38,7 +38,7 @@ export default function Grid({ data }: Props) {
           {data.images.map((image) => (
             <div
               key={image.id}
-              className="group relative aspect-[4/3] overflow-hidden cursor-pointer"
+              className="group relative aspect-4/3 overflow-hidden cursor-pointer"
               onClick={() => openLightbox(image.id)}
             >
               <Img
