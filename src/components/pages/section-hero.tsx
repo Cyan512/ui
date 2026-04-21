@@ -37,6 +37,10 @@ export default function SectionHero({ data }: Props) {
         width="200"
         height="200"
       />
+      <img
+        src="https://strapi.hostal-korikallpa.com/uploads/hero_bg_1_3_910e858a_159a8f399e.jpg"
+        alt="asda"
+      />
     </>
   );
 }
