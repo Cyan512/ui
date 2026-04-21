@@ -15,7 +15,6 @@ const nextConfig: NextConfig = {
       {
         protocol: STRAPI_PROTOCOL,
         hostname: STRAPI_HOST,
-        port: STRAPI_PORT,
         pathname: '/uploads/**',
       },
       {
