@@ -19,7 +19,7 @@ type Props = {
 };
 
 export default async function Room({ params }: Props) {
-  const endpoint = 'room-page';
+  const endpoint = 'rooms-page';
   const { locale } = await params;
   setRequestLocale(locale);
   const res = await getPage<RoomContent>(endpoint, locale);

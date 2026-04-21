@@ -1,27 +1,22 @@
 import { HomeRooms } from '@/src/types/page-content/home-content';
 import { JSX } from 'react';
-import { Button } from '@/src/components/atoms/button';
-import Container from '@/src/components/atoms/container';
+import SectionHeading from '@/src/components/atoms/section-heading';
 
 interface Props {
   data: HomeRooms;
 }
 export default function Rooms({ data }: Props): JSX.Element {
   return (
-    <section className="py-24 lg:py-32 bg-charcoal">
-      <Container>
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <p className="text-gold font-body text-sm tracking-[0.2em] uppercase mb-4">
-            {data.subtitle}
-          </p>
-          <h2 className="text-4xl md:text-5xl font-headline font-light text-cream leading-tight">
-            {data.title}
-          </h2>
+    <section className="py-32 lg:py-40 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="flex flex-col  items-center lg:justify-between mb-16">
+          <SectionHeading
+            label={data.subtitle}
+            title={data.title}
+            className="mb-0"
+          />
         </div>
-        <div className="text-center">
-          <Button link={data.link} />
-        </div>
-      </Container>
+      </div>
     </section>
   );
 }

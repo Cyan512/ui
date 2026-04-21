@@ -50,10 +50,10 @@ export default async function Home({ params }: Props) {
   const res = await getPage<HomeContent>(endpoint, locale);
   const content = res.data.content;
   return (
-    <>
+    <div className="min-h-screen bg-cream">
       {content.map((component: HomeBlocks, index: number) =>
         renderComponent(component, index)
       )}
-    </>
+    </div>
   );
 }

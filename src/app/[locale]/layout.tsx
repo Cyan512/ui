@@ -4,6 +4,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { routing } from '@/src/i18n/routing';
 import { notFound } from 'next/navigation';
 import { getMessages, setRequestLocale } from 'next-intl/server';
+import React from 'react';
 
 export const metadata: Metadata = {
   title: 'Create Next App',

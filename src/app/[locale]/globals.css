@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
-
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
   --color-primary: #C0573E;
@@ -11,19 +10,7 @@
   --color-charcoal: #2C2C2C;
   --color-gold: #C9A962;
 
-  --font-headline: 'Cormorant Garamond', serif;
-  --font-body: 'Inter', sans-serif;
-  --font-label: 'Inter', sans-serif;
-}
-
-.testimonials-swiper .swiper-pagination {
-  @apply mt-12 relative;
-}
-
-.testimonials-swiper .swiper-pagination-bullet {
-  @apply w-2 h-2 bg-white/40 transition-all duration-300;
-}
-
-.testimonials-swiper .swiper-pagination-bullet-active {
-  @apply bg-gold w-8 rounded;
+  --font-headline: "Cormorant Garamond", serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Inter", sans-serif;
 }

@@ -1,18 +1,10 @@
-import Header from '@/src/components/organisms/header';
+import MainLayout from '@/src/components/templates/main-layout';
+import React from 'react';
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-
-  return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <main className="flex-1">{children}</main>
-    </div>
-  );
+  return <MainLayout>{children}</MainLayout>;
 }
