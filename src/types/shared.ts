@@ -14,6 +14,21 @@ export interface Link {
   type: 'primary' | 'secondary' | 'link';
 }
 
+export interface SectionAbout {
+  __component: 'shared.section-about';
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: Img;
+  link: Link;
+}
+
+export interface SectionContact {
+  __component: 'shared.section-contact';
+  id: number;
+}
+
 export interface SectionCTA {
   __component: 'shared.section-cta';
   id: number;
@@ -28,7 +43,14 @@ export interface SectionHero {
   id: number;
   title: string;
   subtitle: string;
+  description: string;
   image: Img;
+  links: Link[];
+}
+
+export interface SectionMap {
+  __component: 'shared.section-map';
+  id: number;
 }
 
 export interface Value {
@@ -65,21 +87,23 @@ export interface FAQItem {
   answer: string;
 }
 
-export interface GalleryCategory {
-  id: number;
-  name: string;
-  slug: string;
-}
-
-export interface GalleryImage {
-  id: number;
-  image: Img;
-  category: string;
-}
-
 export interface Social {
   id: number;
   platform: string;
   url: string;
   icon: string;
+}
+
+export interface Metric {
+  id: number;
+  label: string;
+  number: number;
+  more: boolean;
+}
+
+export interface Service {
+  id: number;
+  title: string;
+  description: string;
+  schedule: string;
 }

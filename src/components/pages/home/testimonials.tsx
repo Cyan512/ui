@@ -1,14 +1,7 @@
 'use client';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
 import { HomeTestimonials } from '@/src/types/page-content/home-content';
 import { JSX } from 'react';
-import { Button } from '@/src/components/atoms/button';
-import Container from '@/src/components/atoms/container';
-import TestimonialCard from '@/src/components/molecules/testimonial-card';
 import SectionHeading from '@/src/components/atoms/section-heading';
 
 interface Props {

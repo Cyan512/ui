@@ -1,12 +1,12 @@
-import { HomeAbout } from '@/src/types/page-content/home-content';
 import { JSX } from 'react';
 import Img from '@/src/components/atoms/img';
 import { Button } from '@/src/components/atoms/button';
 import Container from '@/src/components/atoms/container';
 import Divider from '@/src/components/atoms/divider';
+import { SectionAbout } from '@/src/types/shared';
 
 interface Props {
-  data: HomeAbout;
+  data: SectionAbout;
 }
 
 export default function About({ data }: Props): JSX.Element {

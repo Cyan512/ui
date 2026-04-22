@@ -1,27 +1,13 @@
 import { StrapiEntity } from '@/src/types/strapi';
-import { SectionCTA, Img, Link } from '@/src/types/shared';
+import {
+  SectionCTA,
+  Link,
+  SectionHero,
+  SectionAbout,
+} from '@/src/types/shared';
+import { ServiceEntity } from '@/src/types/entitys/service.entity';
+import { RoomEntity } from '@/src/types/entitys/room.entity';
 import { TestimonialEntity } from '@/src/types/entitys/testimonial.entity';
-import { ServicelEntity } from '@/src/types/entitys/service.entity';
-
-export interface HomeHero {
-  __component: 'home.home-hero';
-  id: number;
-  title: string;
-  subtitle: string;
-  description: string;
-  image: Img;
-  links: Link[];
-}
-
-export interface HomeAbout {
-  __component: 'home.home-about';
-  id: number;
-  title: string;
-  subtitle: string;
-  description: string;
-  image: Img;
-  link: Link;
-}
 
 export interface HomeRooms {
   __component: 'home.home-rooms';
@@ -29,6 +15,7 @@ export interface HomeRooms {
   title: string;
   subtitle: string;
   link: Link;
+  rooms: RoomEntity[];
 }
 
 export interface HomeServices {
@@ -36,8 +23,8 @@ export interface HomeServices {
   id: number;
   title: string;
   subtitle: string;
-  services: ServicelEntity[];
   link: Link;
+  services: ServiceEntity[];
 }
 
 export interface HomeTestimonials {
@@ -50,8 +37,8 @@ export interface HomeTestimonials {
 }
 
 export type HomeBlocks =
-  | HomeHero
-  | HomeAbout
+  | SectionHero
+  | SectionAbout
   | HomeRooms
   | HomeServices
   | HomeTestimonials

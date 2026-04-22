@@ -6,7 +6,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 mb-7 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md">
       <div className="container mx-auto flex h-16 items-center justify-between">
         <nav className="flex items-center gap-1">
-          {['Home', 'About', 'Room', 'Gallery', 'Service', 'Contact'].map(
+          {['Home', 'About', 'RoomEntity', 'Gallery', 'Service', 'Contact'].map(
             (item) => (
               <Link
                 key={item}

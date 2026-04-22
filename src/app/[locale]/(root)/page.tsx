@@ -3,13 +3,15 @@ import { getPage } from '@/src/api/get-page';
 import {
   HomeBlocks,
   HomeContent,
-  HomeHero,
-  HomeAbout,
   HomeRooms,
   HomeServices,
   HomeTestimonials,
 } from '@/src/types/page-content/home-content';
-import { SectionCTA as CTA } from '@/src/types/shared';
+import {
+  SectionAbout,
+  SectionCTA as CTA,
+  SectionHero,
+} from '@/src/types/shared';
 import {
   About,
   Hero,
@@ -22,10 +24,10 @@ import { SectionCTA } from '@/src/components/pages';
 function renderComponent(component: HomeBlocks, index: number) {
   const key = `${component.id}-${index}`;
   switch (component.__component) {
-    case 'home.home-hero':
-      return <Hero key={key} data={component as HomeHero} />;
-    case 'home.home-about':
-      return <About key={key} data={component as HomeAbout} />;
+    case 'shared.section-hero':
+      return <Hero key={key} data={component as SectionHero} />;
+    case 'shared.section-about':
+      return <About key={key} data={component as SectionAbout} />;
     case 'home.home-rooms':
       return <Rooms key={key} data={component as HomeRooms} />;
     case 'home.home-services':

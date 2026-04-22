@@ -1,8 +1,8 @@
 import { Img } from '@/src/types/shared';
 
-export interface ServiceEntity {
+export interface RoomEntity {
   id: number;
-  title: string;
+  name: string;
   slug: string;
   description: string;
   images: Img[];

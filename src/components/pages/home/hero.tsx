@@ -1,11 +1,10 @@
-import { HomeHero } from '@/src/types/page-content/home-content';
 import { JSX } from 'react';
 import Img from '@/src/components/atoms/img';
 import { Button } from '@/src/components/atoms/button';
-import Container from '@/src/components/atoms/container';
+import { SectionHero } from '@/src/types/shared';
 
 interface Props {
-  data: HomeHero;
+  data: SectionHero;
 }
 
 export default function Hero({ data }: Props): JSX.Element {

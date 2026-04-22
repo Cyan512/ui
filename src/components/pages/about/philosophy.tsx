@@ -1,4 +1,3 @@
-import Container from '@/src/components/atoms/container';
 import { AboutPhilosophy } from '@/src/types/page-content/about-content';
 
 interface Props {
@@ -7,35 +6,24 @@ interface Props {
 
 export default function Philosophy({ data }: Props) {
   return (
-    <section className="py-24 lg:py-32 bg-white">
-      <Container>
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <span className="text-primary font-body text-sm tracking-[0.2em] uppercase mb-4 block">
-            {data.subtitle}
-          </span>
-          <h2 className="text-4xl md:text-5xl font-headline font-light text-charcoal mb-6 leading-tight">
-            {data.title}
-          </h2>
-          <p className="text-neutral font-body text-lg font-light leading-relaxed">
-            {data.description}
-          </p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+    <section className="py-20 lg:py-32">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {data.values.map((value) => (
             <div
               key={value.id}
-              className="text-center p-8 border border-primary/10 hover:border-primary/30 transition-colors duration-300"
+              className="bg-white p-10 border border-[#E8E4DF]"
             >
-              <h3 className="text-2xl font-headline font-light text-charcoal mb-4">
+              <h3 className="font-headline text-2xl text-charcoal mb-4">
                 {value.title}
               </h3>
-              <p className="text-neutral font-body font-light leading-relaxed">
+              <p className="text-neutral font-light leading-relaxed">
                 {value.description}
               </p>
             </div>
           ))}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
