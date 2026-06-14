@@ -1,2 +1,13 @@
-[variables]
-NODE_ENV = "production"
+name = "ui"
+
+[phases.setup]
+nixPkgs = ["nodejs_22", "pnpm"]
+
+[phases.install]
+cmds = ["pnpm install --frozen-lockfile"]
+
+[phases.build]
+cmds = ["pnpm run build"]
+
+[start]
+cmd = "npx serve dist -l $PORT --single"
