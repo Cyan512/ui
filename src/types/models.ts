@@ -15,12 +15,22 @@ export interface CrearTipoProgramaRequest {
   imagenBg?: string
 }
 
+export interface ActualizarTipoProgramaRequest {
+  nombre: string
+  imagenCard?: string
+  imagenBg?: string
+}
+
 export interface Facultad {
   id: number
   nombre: string
 }
 
 export interface CrearFacultadRequest {
+  nombre: string
+}
+
+export interface ActualizarFacultadRequest {
   nombre: string
 }
 
@@ -37,6 +47,12 @@ export interface CrearCursoRequest {
   categoria: Categoria
 }
 
+export interface ActualizarCursoRequest {
+  nombre: string
+  creditos: number
+  categoria: Categoria
+}
+
 export interface Programa {
   id: number
   idTipoPrograma: TipoPrograma
@@ -48,6 +64,14 @@ export interface Programa {
 }
 
 export interface CrearProgramaRequest {
+  idTipoPrograma: number
+  nombre: string
+  idFacultad: number
+  convocatoria?: boolean
+  modalidad: Modalidad
+}
+
+export interface ActualizarProgramaRequest {
   idTipoPrograma: number
   nombre: string
   idFacultad: number

@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
-import { Plus } from "lucide-react"
+import { Plus, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -13,34 +13,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { PageHeader } from "@/components/shared/page-header"
 import { DataTable, type ColumnDef } from "@/components/shared/data-table"
 import { CreateSheet } from "@/components/shared/create-sheet"
-import { useProgramasCursos, useCrearProgramaCurso } from "@/hooks/queries/use-programas-cursos"
+import { useProgramasCursos, useCrearProgramaCurso, useEliminarProgramaCurso } from "@/hooks/queries/use-programas-cursos"
 import { useProgramas } from "@/hooks/queries/use-programas"
 import { useCursos } from "@/hooks/queries/use-cursos"
 import { programaCursoSchema, type ProgramaCursoSchema } from "../schemas/programa-curso-schema"
 import type { ProgramaCurso } from "@/types"
-
-const columns: ColumnDef<ProgramaCurso>[] = [
-  { header: "ID", accessorKey: "id" },
-  {
-    header: "Programa",
-    accessorFn: (row) => row.idPrograma.nombre,
-  },
-  {
-    header: "Curso",
-    accessorFn: (row) => row.idCurso.nombre,
-  },
-  { header: "Semestre(s)", accessorKey: "semestres" },
-]
 
 export function ProgramasCursosListPage() {
   const { data, isLoading, isError, refetch } = useProgramasCursos()
   const { data: programas } = useProgramas()
   const { data: cursos } = useCursos()
   const [createOpen, setCreateOpen] = useState(false)
-  const { mutateAsync: crear, isPending } = useCrearProgramaCurso()
+  const [deleteItem, setDeleteItem] = useState<ProgramaCurso | null>(null)
+  const { mutateAsync: crear, isPending: isCreating } = useCrearProgramaCurso()
+  const { mutateAsync: eliminar, isPending: isDeleting } = useEliminarProgramaCurso()
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { handleSubmit, setValue, reset, formState: { errors } } = useForm<ProgramaCursoSchema>({
@@ -57,6 +57,57 @@ export function ProgramasCursosListPage() {
       toast.error("Error al crear la asociación")
     }
   }
+
+  async function onDelete() {
+    if (!deleteItem) return
+    try {
+      await eliminar(deleteItem.id)
+      toast.success("Asociación eliminada exitosamente")
+      setDeleteItem(null)
+    } catch {
+      toast.error("Error al eliminar la asociación")
+    }
+  }
+
+  const columns: ColumnDef<ProgramaCurso>[] = [
+    { header: "ID", accessorKey: "id" },
+    {
+      header: "Programa",
+      accessorFn: (row) => row.idPrograma.nombre,
+    },
+    {
+      header: "Curso",
+      accessorFn: (row) => row.idCurso.nombre,
+    },
+    { header: "Semestre(s)", accessorKey: "semestres" },
+    {
+      header: "Acciones",
+      accessorFn: () => null,
+      cell: (_, row) => (
+        <AlertDialog open={deleteItem?.id === row.id} onOpenChange={(open) => { if (!open) setDeleteItem(null) }}>
+          <AlertDialogTrigger asChild>
+            <Button variant="ghost" size="sm" onClick={() => setDeleteItem(row)}>
+              <Trash2 className="size-4 text-destructive" />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Eliminar asociación</AlertDialogTitle>
+              <AlertDialogDescription>
+                Vas a eliminar la asociación entre <strong>"{row.idPrograma.nombre}"</strong> y <strong>"{row.idCurso.nombre}"</strong>. Esta acción no se puede deshacer.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setDeleteItem(null)}>Cancelar</AlertDialogCancel>
+              <AlertDialogAction onClick={onDelete} disabled={isDeleting}>
+                {isDeleting ? "Eliminando..." : "Eliminar"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      ),
+    },
+  ]
 
   return (
     <div>
@@ -136,8 +187,8 @@ export function ProgramasCursosListPage() {
             )}
           </div>
           <div className="flex gap-2 pt-2">
-            <Button type="submit" disabled={isPending}>
-              {isPending ? "Guardando..." : "Guardar"}
+            <Button type="submit" disabled={isCreating}>
+              {isCreating ? "Guardando..." : "Guardar"}
             </Button>
             <Button type="button" variant="outline" onClick={() => { setCreateOpen(false); reset() }}>
               Cancelar

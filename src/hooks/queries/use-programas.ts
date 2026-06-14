@@ -4,6 +4,7 @@ import type {
   ApiResponse,
   Programa,
   CrearProgramaRequest,
+  ActualizarProgramaRequest,
   ProgramasFilters,
 } from "@/types"
 
@@ -33,6 +34,28 @@ export function useCrearPrograma() {
   return useMutation({
     mutationFn: (data: CrearProgramaRequest) =>
       api.post<ApiResponse<Programa>>("/programas", data).then((r) => r.data.data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["programas"] })
+    },
+  })
+}
+
+export function useActualizarPrograma() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ slug, data }: { slug: string; data: ActualizarProgramaRequest }) =>
+      api.put<ApiResponse<Programa>>(`/programas/${slug}`, data).then((r) => r.data.data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["programas"] })
+    },
+  })
+}
+
+export function useEliminarPrograma() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (slug: string) =>
+      api.delete<ApiResponse<null>>(`/programas/${slug}`).then((r) => r.data.data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["programas"] })
     },

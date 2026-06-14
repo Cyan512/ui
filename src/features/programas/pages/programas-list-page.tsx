@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
-import { Eye, Plus, Search, X } from "lucide-react"
+import { Eye, Pencil, Plus, Search, Trash2, X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,12 +16,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { PageHeader } from "@/components/shared/page-header"
 import { DataTable, type ColumnDef } from "@/components/shared/data-table"
 import { CreateSheet } from "@/components/shared/create-sheet"
 import { useFacultades } from "@/hooks/queries/use-facultades"
 import { useTiposPrograma } from "@/hooks/queries/use-tipos-programa"
-import { useProgramas, useCrearPrograma } from "@/hooks/queries/use-programas"
+import { useProgramas, useCrearPrograma, useActualizarPrograma, useEliminarPrograma } from "@/hooks/queries/use-programas"
 import { programaSchema, type ProgramaSchema } from "../schemas/programa-schema"
 import type { Programa, ProgramasFilters } from "@/types"
 
@@ -42,7 +53,11 @@ export function ProgramasListPage() {
   const [draft, setDraft] = useState({ q: "", modalidad: "", idFacultad: "", convocatoria: "" })
   const [applied, setApplied] = useState<URLSearchParams>(new URLSearchParams())
   const [createOpen, setCreateOpen] = useState(false)
-  const { mutateAsync: crear, isPending } = useCrearPrograma()
+  const [editItem, setEditItem] = useState<Programa | null>(null)
+  const [deleteItem, setDeleteItem] = useState<Programa | null>(null)
+  const { mutateAsync: crear, isPending: isCreating } = useCrearPrograma()
+  const { mutateAsync: actualizar, isPending: isUpdating } = useActualizarPrograma()
+  const { mutateAsync: eliminar, isPending: isDeleting } = useEliminarPrograma()
 
   const filters: ProgramasFilters = {
     tipoSlug,
@@ -75,6 +90,51 @@ export function ProgramasListPage() {
     } catch {
       toast.error("Error al crear el programa")
     }
+  }
+
+  async function onEdit(data: ProgramaSchema) {
+    if (!editItem) return
+    try {
+      await actualizar({
+        slug: editItem.slug,
+        data: {
+          ...data,
+          convocatoria: data.convocatoria ?? false,
+        },
+      })
+      toast.success("Programa actualizado exitosamente")
+      setEditItem(null)
+      reset()
+    } catch {
+      toast.error("Error al actualizar el programa")
+    }
+  }
+
+  async function onDelete() {
+    if (!deleteItem) return
+    try {
+      await eliminar(deleteItem.slug)
+      toast.success("Programa eliminado exitosamente")
+      setDeleteItem(null)
+    } catch {
+      toast.error("Error al eliminar el programa")
+    }
+  }
+
+  function openEdit(programa: Programa) {
+    setEditItem(programa)
+    reset({
+      nombre: programa.nombre,
+      idTipoPrograma: programa.idTipoPrograma.id,
+      idFacultad: programa.idFacultad.id,
+      modalidad: programa.modalidad,
+      convocatoria: programa.convocatoria,
+    })
+  }
+
+  function closeEdit() {
+    setEditItem(null)
+    reset()
   }
 
   function buscar() {
@@ -136,7 +196,35 @@ export function ProgramasListPage() {
     {
       header: "Acciones",
       accessorFn: (row) => row.slug,
-      cell: (_, row) => <ActionCell slug={row.slug} tipoSlug={row.idTipoPrograma.slug} />,
+      cell: (_, row) => (
+        <div className="flex gap-1">
+          <ActionCell slug={row.slug} tipoSlug={row.idTipoPrograma.slug} />
+          <Button variant="ghost" size="sm" onClick={() => openEdit(row)}>
+            <Pencil className="size-4" />
+          </Button>
+          <AlertDialog open={deleteItem?.id === row.id} onOpenChange={(open) => { if (!open) setDeleteItem(null) }}>
+            <AlertDialogTrigger asChild>
+              <Button variant="ghost" size="sm" onClick={() => setDeleteItem(row)}>
+                <Trash2 className="size-4 text-destructive" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Eliminar programa</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Vas a eliminar el programa <strong>"{row.nombre}"</strong>. Esta acción no se puede deshacer.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setDeleteItem(null)}>Cancelar</AlertDialogCancel>
+                <AlertDialogAction onClick={onDelete} disabled={isDeleting}>
+                  {isDeleting ? "Eliminando..." : "Eliminar"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      ),
     },
   ]
 
@@ -251,9 +339,9 @@ export function ProgramasListPage() {
       >
         <form onSubmit={handleSubmit(onCreate)} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="nombre">Nombre</Label>
+            <Label htmlFor="create-nombre">Nombre</Label>
             <Input
-              id="nombre"
+              id="create-nombre"
               placeholder="Ej: Ingeniería de Sistemas"
               {...register("nombre")}
             />
@@ -262,7 +350,7 @@ export function ProgramasListPage() {
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="idTipoPrograma">Tipo de Programa</Label>
+            <Label htmlFor="create-idTipoPrograma">Tipo de Programa</Label>
             <Select onValueChange={(v) => setValue("idTipoPrograma", Number(v))}>
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar tipo" />
@@ -278,7 +366,7 @@ export function ProgramasListPage() {
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="idFacultad">Facultad</Label>
+            <Label htmlFor="create-idFacultad">Facultad</Label>
             <Select onValueChange={(v) => setValue("idFacultad", Number(v))}>
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar facultad" />
@@ -294,7 +382,7 @@ export function ProgramasListPage() {
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="modalidad">Modalidad</Label>
+            <Label htmlFor="create-modalidad">Modalidad</Label>
             <Select onValueChange={(v) => setValue("modalidad", v as ProgramaSchema["modalidad"])}>
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar modalidad" />
@@ -311,16 +399,110 @@ export function ProgramasListPage() {
           </div>
           <div className="flex items-center gap-2">
             <Switch
-              id="convocatoria"
+              id="create-convocatoria"
               onCheckedChange={(v) => setValue("convocatoria", v)}
             />
-            <Label htmlFor="convocatoria">Convocatoria abierta</Label>
+            <Label htmlFor="create-convocatoria">Convocatoria abierta</Label>
           </div>
           <div className="flex gap-2 pt-2">
-            <Button type="submit" disabled={isPending}>
-              {isPending ? "Guardando..." : "Guardar"}
+            <Button type="submit" disabled={isCreating}>
+              {isCreating ? "Guardando..." : "Guardar"}
             </Button>
             <Button type="button" variant="outline" onClick={() => { setCreateOpen(false); reset() }}>
+              Cancelar
+            </Button>
+          </div>
+        </form>
+      </CreateSheet>
+
+      <CreateSheet
+        open={!!editItem}
+        onOpenChange={(open) => { if (!open) closeEdit() }}
+        title="Editar Programa"
+        description="Actualiza los datos del programa"
+      >
+        <form onSubmit={handleSubmit(onEdit)} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="edit-nombre">Nombre</Label>
+            <Input
+              id="edit-nombre"
+              placeholder="Ej: Ingeniería de Sistemas"
+              {...register("nombre")}
+            />
+            {errors.nombre && (
+              <p className="text-sm text-destructive">{errors.nombre.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-idTipoPrograma">Tipo de Programa</Label>
+            <Select
+              defaultValue={String(editItem?.idTipoPrograma.id ?? "")}
+              onValueChange={(v) => setValue("idTipoPrograma", Number(v))}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar tipo" />
+              </SelectTrigger>
+              <SelectContent>
+                {tipos?.map((t) => (
+                  <SelectItem key={t.id} value={String(t.id)}>{t.nombre}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.idTipoPrograma && (
+              <p className="text-sm text-destructive">{errors.idTipoPrograma.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-idFacultad">Facultad</Label>
+            <Select
+              defaultValue={String(editItem?.idFacultad.id ?? "")}
+              onValueChange={(v) => setValue("idFacultad", Number(v))}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar facultad" />
+              </SelectTrigger>
+              <SelectContent>
+                {facultades?.map((f) => (
+                  <SelectItem key={f.id} value={String(f.id)}>{f.nombre}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.idFacultad && (
+              <p className="text-sm text-destructive">{errors.idFacultad.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-modalidad">Modalidad</Label>
+            <Select
+              defaultValue={editItem?.modalidad}
+              onValueChange={(v) => setValue("modalidad", v as ProgramaSchema["modalidad"])}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar modalidad" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="PRESENCIAL">Presencial</SelectItem>
+                <SelectItem value="SEMIPRESENCIAL">Semipresencial</SelectItem>
+                <SelectItem value="VIRTUAL">Virtual</SelectItem>
+              </SelectContent>
+            </Select>
+            {errors.modalidad && (
+              <p className="text-sm text-destructive">{errors.modalidad.message}</p>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <Switch
+              id="edit-convocatoria"
+              defaultChecked={editItem?.convocatoria}
+              onCheckedChange={(v) => setValue("convocatoria", v)}
+            />
+            <Label htmlFor="edit-convocatoria">Convocatoria abierta</Label>
+          </div>
+          <div className="flex gap-2 pt-2">
+            <Button type="submit" disabled={isUpdating}>
+              {isUpdating ? "Guardando..." : "Guardar"}
+            </Button>
+            <Button type="button" variant="outline" onClick={closeEdit}>
               Cancelar
             </Button>
           </div>
