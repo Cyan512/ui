@@ -2,4 +2,4 @@
 NODE_ENV = "production"
 
 [phases.setup]
-nixPkgs = ["...", "nodejs_22"]
+nixPkgs = ["...", "nodejs_23"]
