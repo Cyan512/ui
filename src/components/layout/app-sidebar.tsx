@@ -7,6 +7,7 @@ import {
   GraduationCap,
   Link2,
   LogOut,
+  ChevronDown,
 } from "lucide-react"
 import {
   Sidebar,
@@ -18,15 +19,23 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import { useAuth } from "@/hooks/use-auth"
+import { useTiposPrograma } from "@/hooks/queries/use-tipos-programa"
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, to: "/dashboard" },
   { label: "Tipos de Programa", icon: FileType, to: "/tipos-programa" },
   { label: "Facultades", icon: Building2, to: "/facultades" },
   { label: "Cursos", icon: BookOpen, to: "/cursos" },
-  { label: "Programas", icon: GraduationCap, to: "/programas" },
   { label: "Programa-Curso", icon: Link2, to: "/programas-cursos" },
 ]
 
@@ -34,6 +43,7 @@ export function AppSidebar() {
   const location = useLocation()
   const navigate = useNavigate()
   const { logout, user } = useAuth()
+  const { data: tipos } = useTiposPrograma()
 
   return (
     <Sidebar collapsible="icon">
@@ -62,6 +72,47 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+
+              {/* Programas collapsible */}
+              <SidebarMenuItem>
+                <Collapsible
+                  defaultOpen={location.pathname.startsWith("/programas") && !location.pathname.startsWith("/programas-cursos")}
+                  className="group/collapsible"
+                >
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                      isActive={location.pathname.startsWith("/programas") && !location.pathname.startsWith("/programas/crear") && !location.pathname.startsWith("/programas-cursos")}
+                      tooltip="Programas"
+                    >
+                      <GraduationCap />
+                      <span>Programas</span>
+                      <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton
+                          isActive={location.pathname === "/programas"}
+                          onClick={() => navigate("/programas")}
+                        >
+                          Todos
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                      {tipos?.map((t) => (
+                        <SidebarMenuSubItem key={t.id}>
+                          <SidebarMenuSubButton
+                            isActive={location.pathname === `/programas/${t.slug}` || location.pathname.startsWith(`/programas/${t.slug}/`)}
+                            onClick={() => navigate(`/programas/${t.slug}`)}
+                          >
+                            {t.nombre}
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </Collapsible>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

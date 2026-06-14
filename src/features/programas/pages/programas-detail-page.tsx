@@ -9,7 +9,7 @@ import { ErrorState } from "@/components/shared/error-state"
 import { usePrograma } from "@/hooks/queries/use-programas"
 
 export function ProgramasDetailPage() {
-  const { slug } = useParams<{ slug: string }>()
+  const { tipoSlug, slug } = useParams<{ tipoSlug: string; slug: string }>()
   const navigate = useNavigate()
   const { data: programa, isLoading, isError, refetch } = usePrograma(slug!)
 
@@ -37,6 +37,7 @@ export function ProgramasDetailPage() {
         title={programa.nombre}
         breadcrumbs={[
           { label: "Programas", href: "/programas" },
+          { label: programa.idTipoPrograma.nombre, href: `/programas/${tipoSlug}` },
           { label: programa.nombre },
         ]}
       />
@@ -91,9 +92,9 @@ export function ProgramasDetailPage() {
         </Card>
       </div>
 
-      <Button variant="outline" className="mt-4" onClick={() => navigate("/programas")}>
+      <Button variant="outline" className="mt-4" onClick={() => navigate(`/programas/${tipoSlug}`)}>
         <ArrowLeft />
-        Volver a Programas
+        Volver a {tipoSlug ? programa.idTipoPrograma.nombre : "Programas"}
       </Button>
     </div>
   )

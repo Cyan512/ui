@@ -38,7 +38,8 @@ function App() {
             <Route path="/cursos/crear" element={<CursosCreatePage />} />
             <Route path="/programas" element={<ProgramasListPage />} />
             <Route path="/programas/crear" element={<ProgramasCreatePage />} />
-            <Route path="/programas/:slug" element={<ProgramasDetailPage />} />
+            <Route path="/programas/:tipoSlug" element={<ProgramasListPage />} />
+            <Route path="/programas/:tipoSlug/:slug" element={<ProgramasDetailPage />} />
             <Route path="/programas-cursos" element={<ProgramasCursosListPage />} />
             <Route path="/programas-cursos/crear" element={<ProgramasCursosCreatePage />} />
           </Route>

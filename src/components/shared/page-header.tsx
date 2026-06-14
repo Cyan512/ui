@@ -28,18 +28,18 @@ export function PageHeader({ title, breadcrumbs, action }: PageHeaderProps) {
     <div className="mb-6 flex flex-col gap-2">
       <Breadcrumb>
         <BreadcrumbList>
-          {breadcrumbs.map((crumb, i) => (
+          {breadcrumbs.flatMap((crumb, i) => [
             <BreadcrumbItem key={i}>
               {i < breadcrumbs.length - 1 ? (
-                <>
-                  <BreadcrumbLink href={crumb.href}>{crumb.label}</BreadcrumbLink>
-                  <BreadcrumbSeparator />
-                </>
+                <BreadcrumbLink href={crumb.href}>{crumb.label}</BreadcrumbLink>
               ) : (
                 <span className="text-foreground">{crumb.label}</span>
               )}
-            </BreadcrumbItem>
-          ))}
+            </BreadcrumbItem>,
+            ...(i < breadcrumbs.length - 1
+              ? [<BreadcrumbSeparator key={`sep-${i}`} />]
+              : []),
+          ])}
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex items-center justify-between">

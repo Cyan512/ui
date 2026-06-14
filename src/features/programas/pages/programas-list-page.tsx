@@ -1,5 +1,6 @@
-import { useNavigate, useSearchParams } from "react-router-dom"
-import { Eye, Plus, Search } from "lucide-react"
+import { useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import { Eye, Plus, Search, X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,10 +19,10 @@ import { useTiposPrograma } from "@/hooks/queries/use-tipos-programa"
 import { useProgramas } from "@/hooks/queries/use-programas"
 import type { Programa, ProgramasFilters } from "@/types"
 
-function ActionCell({ slug }: { slug: string }) {
+function ActionCell({ slug, tipoSlug }: { slug: string; tipoSlug: string }) {
   const navigate = useNavigate()
   return (
-    <Button variant="ghost" size="sm" onClick={() => navigate(`/programas/${slug}`)}>
+    <Button variant="ghost" size="sm" onClick={() => navigate(`/programas/${tipoSlug}/${slug}`)}>
       <Eye className="size-4" />
     </Button>
   )
@@ -29,35 +30,46 @@ function ActionCell({ slug }: { slug: string }) {
 
 export function ProgramasListPage() {
   const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const { tipoSlug } = useParams<{ tipoSlug?: string }>()
   const { data: tipos } = useTiposPrograma()
   const { data: facultades } = useFacultades()
 
+  const [draft, setDraft] = useState({ q: "", modalidad: "", idFacultad: "", convocatoria: "" })
+  const [applied, setApplied] = useState<URLSearchParams>(new URLSearchParams())
+
   const filters: ProgramasFilters = {
-    tipoSlug: searchParams.get("tipoSlug") ?? undefined,
-    q: searchParams.get("q") ?? undefined,
-    modalidad: (searchParams.get("modalidad") as ProgramasFilters["modalidad"]) ?? undefined,
-    idFacultad: searchParams.get("idFacultad") ? Number(searchParams.get("idFacultad")) : undefined,
-    convocatoria: searchParams.get("convocatoria") === "true"
+    tipoSlug,
+    q: applied.get("q") ?? undefined,
+    modalidad: (applied.get("modalidad") as ProgramasFilters["modalidad"]) ?? undefined,
+    idFacultad: applied.get("idFacultad") ? Number(applied.get("idFacultad")) : undefined,
+    convocatoria: applied.get("convocatoria") === "true"
       ? true
-      : searchParams.get("convocatoria") === "false"
+      : applied.get("convocatoria") === "false"
         ? false
         : undefined,
   }
 
   const { data, isLoading, isError, refetch } = useProgramas(filters)
 
-  function setFilter(key: string, value: string | undefined) {
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev)
-      if (value === undefined || value === "all") {
-        next.delete(key)
-      } else {
-        next.set(key, value)
-      }
-      return next
-    })
+  function buscar() {
+    const params = new URLSearchParams()
+    if (draft.q) params.set("q", draft.q)
+    if (draft.modalidad) params.set("modalidad", draft.modalidad)
+    if (draft.idFacultad) params.set("idFacultad", draft.idFacultad)
+    if (draft.convocatoria) params.set("convocatoria", draft.convocatoria)
+    setApplied(params)
   }
+
+  function limpiar() {
+    setDraft({ q: "", modalidad: "", idFacultad: "", convocatoria: "" })
+    setApplied(new URLSearchParams())
+  }
+
+  const tipoNombre = tipos?.find((t) => t.slug === tipoSlug)?.nombre
+  const titulo = tipoNombre ? `Programas de ${tipoNombre}` : "Todos los Programas"
+  const breadcrumbs = tipoNombre
+    ? [{ label: "Programas", href: "/programas" }, { label: tipoNombre }]
+    : [{ label: "Programas" }]
 
   const columns: ColumnDef<Programa>[] = [
     { header: "ID", accessorKey: "id" },
@@ -94,15 +106,15 @@ export function ProgramasListPage() {
     {
       header: "Acciones",
       accessorFn: (row) => row.slug,
-      cell: (_, row) => <ActionCell slug={row.slug} />,
+      cell: (_, row) => <ActionCell slug={row.slug} tipoSlug={row.idTipoPrograma.slug} />,
     },
   ]
 
   return (
     <div>
       <PageHeader
-        title="Programas"
-        breadcrumbs={[{ label: "Programas" }]}
+        title={titulo}
+        breadcrumbs={breadcrumbs}
         action={{
           label: "Nuevo Programa",
           icon: <Plus />,
@@ -112,27 +124,10 @@ export function ProgramasListPage() {
 
       <div className="mb-4 flex flex-wrap items-end gap-3 rounded-lg border p-4">
         <div className="space-y-1">
-          <Label className="text-xs">Tipo</Label>
-          <Select
-            value={filters.tipoSlug ?? "all"}
-            onValueChange={(v) => setFilter("tipoSlug", v === "all" ? undefined : v)}
-          >
-            <SelectTrigger className="h-8 w-40">
-              <SelectValue placeholder="Todos" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos</SelectItem>
-              {tipos?.map((t) => (
-                <SelectItem key={t.id} value={t.slug}>{t.nombre}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-1">
           <Label className="text-xs">Facultad</Label>
           <Select
-            value={filters.idFacultad ? String(filters.idFacultad) : "all"}
-            onValueChange={(v) => setFilter("idFacultad", v === "all" ? undefined : v)}
+            value={draft.idFacultad}
+            onValueChange={(v) => setDraft((p) => ({ ...p, idFacultad: v === "all" ? "" : v }))}
           >
             <SelectTrigger className="h-8 w-44">
               <SelectValue placeholder="Todas" />
@@ -148,8 +143,8 @@ export function ProgramasListPage() {
         <div className="space-y-1">
           <Label className="text-xs">Modalidad</Label>
           <Select
-            value={filters.modalidad ?? "all"}
-            onValueChange={(v) => setFilter("modalidad", v === "all" ? undefined : v)}
+            value={draft.modalidad}
+            onValueChange={(v) => setDraft((p) => ({ ...p, modalidad: v === "all" ? "" : v }))}
           >
             <SelectTrigger className="h-8 w-40">
               <SelectValue placeholder="Todas" />
@@ -165,8 +160,8 @@ export function ProgramasListPage() {
         <div className="space-y-1">
           <Label className="text-xs">Convocatoria</Label>
           <Select
-            value={filters.convocatoria === undefined ? "all" : String(filters.convocatoria)}
-            onValueChange={(v) => setFilter("convocatoria", v === "all" ? undefined : v)}
+            value={draft.convocatoria}
+            onValueChange={(v) => setDraft((p) => ({ ...p, convocatoria: v === "all" ? "" : v }))}
           >
             <SelectTrigger className="h-8 w-36">
               <SelectValue placeholder="Todas" />
@@ -185,21 +180,20 @@ export function ProgramasListPage() {
             <Input
               className="h-8 w-44 pl-8"
               placeholder="Nombre..."
-              defaultValue={filters.q ?? ""}
-              onChange={(e) => {
-                const val = e.target.value || undefined
-                setSearchParams((prev) => {
-                  const next = new URLSearchParams(prev)
-                  if (!val) {
-                    next.delete("q")
-                  } else {
-                    next.set("q", val)
-                  }
-                  return next
-                })
-              }}
+              value={draft.q}
+              onChange={(e) => setDraft((p) => ({ ...p, q: e.target.value }))}
             />
           </div>
+        </div>
+        <div className="flex items-end gap-2">
+          <Button className="h-8" onClick={buscar}>
+            <Search />
+            Buscar
+          </Button>
+          <Button className="h-8" variant="outline" onClick={limpiar}>
+            <X />
+            Limpiar
+          </Button>
         </div>
       </div>
 
