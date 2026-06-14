@@ -1,10 +1,14 @@
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { toast } from "sonner"
 import { Eye, Plus, Search, X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 import {
   Select,
   SelectContent,
@@ -14,9 +18,11 @@ import {
 } from "@/components/ui/select"
 import { PageHeader } from "@/components/shared/page-header"
 import { DataTable, type ColumnDef } from "@/components/shared/data-table"
+import { CreateSheet } from "@/components/shared/create-sheet"
 import { useFacultades } from "@/hooks/queries/use-facultades"
 import { useTiposPrograma } from "@/hooks/queries/use-tipos-programa"
-import { useProgramas } from "@/hooks/queries/use-programas"
+import { useProgramas, useCrearPrograma } from "@/hooks/queries/use-programas"
+import { programaSchema, type ProgramaSchema } from "../schemas/programa-schema"
 import type { Programa, ProgramasFilters } from "@/types"
 
 function ActionCell({ slug, tipoSlug }: { slug: string; tipoSlug: string }) {
@@ -29,13 +35,14 @@ function ActionCell({ slug, tipoSlug }: { slug: string; tipoSlug: string }) {
 }
 
 export function ProgramasListPage() {
-  const navigate = useNavigate()
   const { tipoSlug } = useParams<{ tipoSlug?: string }>()
   const { data: tipos } = useTiposPrograma()
   const { data: facultades } = useFacultades()
 
   const [draft, setDraft] = useState({ q: "", modalidad: "", idFacultad: "", convocatoria: "" })
   const [applied, setApplied] = useState<URLSearchParams>(new URLSearchParams())
+  const [createOpen, setCreateOpen] = useState(false)
+  const { mutateAsync: crear, isPending } = useCrearPrograma()
 
   const filters: ProgramasFilters = {
     tipoSlug,
@@ -50,6 +57,25 @@ export function ProgramasListPage() {
   }
 
   const { data, isLoading, isError, refetch } = useProgramas(filters)
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<ProgramaSchema>({
+    resolver: zodResolver(programaSchema) as any,
+  })
+
+  async function onCreate(data: ProgramaSchema) {
+    try {
+      await crear({
+        ...data,
+        convocatoria: data.convocatoria ?? false,
+      })
+      toast.success("Programa creado exitosamente")
+      setCreateOpen(false)
+      reset()
+    } catch {
+      toast.error("Error al crear el programa")
+    }
+  }
 
   function buscar() {
     const params = new URLSearchParams()
@@ -88,7 +114,11 @@ export function ProgramasListPage() {
       accessorKey: "modalidad",
       cell: (value) => {
         const v = value as string
-        return <Badge variant={v === "PRESENCIAL" ? "default" : "secondary"}>{v}</Badge>
+        return (
+          <Badge variant={v === "PRESENCIAL" ? "default" : "secondary"}>
+            {v}
+          </Badge>
+        )
       },
     },
     {
@@ -118,7 +148,7 @@ export function ProgramasListPage() {
         action={{
           label: "Nuevo Programa",
           icon: <Plus />,
-          onClick: () => navigate("/programas/crear"),
+          onClick: () => setCreateOpen(true),
         }}
       />
 
@@ -206,9 +236,96 @@ export function ProgramasListPage() {
         emptyMessage="No hay programas registrados"
         emptyAction={{
           label: "Crear Programa",
-          onClick: () => navigate("/programas/crear"),
+          onClick: () => setCreateOpen(true),
         }}
       />
+
+      <CreateSheet
+        open={createOpen}
+        onOpenChange={(open) => {
+          setCreateOpen(open)
+          if (!open) reset()
+        }}
+        title="Nuevo Programa"
+        description="Completa los datos para registrar un nuevo programa"
+      >
+        <form onSubmit={handleSubmit(onCreate)} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="nombre">Nombre</Label>
+            <Input
+              id="nombre"
+              placeholder="Ej: Ingeniería de Sistemas"
+              {...register("nombre")}
+            />
+            {errors.nombre && (
+              <p className="text-sm text-destructive">{errors.nombre.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="idTipoPrograma">Tipo de Programa</Label>
+            <Select onValueChange={(v) => setValue("idTipoPrograma", Number(v))}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar tipo" />
+              </SelectTrigger>
+              <SelectContent>
+                {tipos?.map((t) => (
+                  <SelectItem key={t.id} value={String(t.id)}>{t.nombre}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.idTipoPrograma && (
+              <p className="text-sm text-destructive">{errors.idTipoPrograma.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="idFacultad">Facultad</Label>
+            <Select onValueChange={(v) => setValue("idFacultad", Number(v))}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar facultad" />
+              </SelectTrigger>
+              <SelectContent>
+                {facultades?.map((f) => (
+                  <SelectItem key={f.id} value={String(f.id)}>{f.nombre}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.idFacultad && (
+              <p className="text-sm text-destructive">{errors.idFacultad.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="modalidad">Modalidad</Label>
+            <Select onValueChange={(v) => setValue("modalidad", v as ProgramaSchema["modalidad"])}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar modalidad" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="PRESENCIAL">Presencial</SelectItem>
+                <SelectItem value="SEMIPRESENCIAL">Semipresencial</SelectItem>
+                <SelectItem value="VIRTUAL">Virtual</SelectItem>
+              </SelectContent>
+            </Select>
+            {errors.modalidad && (
+              <p className="text-sm text-destructive">{errors.modalidad.message}</p>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <Switch
+              id="convocatoria"
+              onCheckedChange={(v) => setValue("convocatoria", v)}
+            />
+            <Label htmlFor="convocatoria">Convocatoria abierta</Label>
+          </div>
+          <div className="flex gap-2 pt-2">
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Guardando..." : "Guardar"}
+            </Button>
+            <Button type="button" variant="outline" onClick={() => { setCreateOpen(false); reset() }}>
+              Cancelar
+            </Button>
+          </div>
+        </form>
+      </CreateSheet>
     </div>
   )
 }
