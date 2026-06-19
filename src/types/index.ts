@@ -18,4 +18,7 @@ export type {
   ProgramaCurso,
   CrearProgramaCursoRequest,
   ProgramasFilters,
+  Comunicado,
+  CrearComunicadoRequest,
+  ActualizarComunicadoRequest,
 } from "./models"

@@ -107,6 +107,30 @@ export interface CrearProgramaCursoRequest {
   semestres: string
 }
 
+export interface Comunicado {
+  id: number
+  titulo: string
+  slug: string
+  resumen: string
+  contenido: string
+  imagen: string | null
+  fechaPublicacion: string
+}
+
+export interface CrearComunicadoRequest {
+  titulo: string
+  resumen: string
+  contenido: string
+  imagen?: string
+}
+
+export interface ActualizarComunicadoRequest {
+  titulo: string
+  resumen: string
+  contenido: string
+  imagen?: string
+}
+
 export interface ProgramasFilters {
   tipoSlug?: string
   q?: string

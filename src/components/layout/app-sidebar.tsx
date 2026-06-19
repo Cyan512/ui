@@ -6,6 +6,7 @@ import {
   BookOpen,
   GraduationCap,
   Link2,
+  Megaphone,
   LogOut,
   ChevronDown,
 } from "lucide-react"
@@ -33,6 +34,7 @@ import { useTiposPrograma } from "@/hooks/queries/use-tipos-programa"
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, to: "/dashboard" },
+  { label: "Comunicados", icon: Megaphone, to: "/comunicados" },
   { label: "Tipos de Programa", icon: FileType, to: "/tipos-programa" },
   { label: "Facultades", icon: Building2, to: "/facultades" },
   { label: "Cursos", icon: BookOpen, to: "/cursos" },

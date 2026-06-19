@@ -17,6 +17,9 @@ import { ProgramasCreatePage } from "@/features/programas/pages/programas-create
 import { ProgramasDetailPage } from "@/features/programas/pages/programas-detail-page"
 import { ProgramasCursosListPage } from "@/features/programas-cursos/pages/programas-cursos-list-page"
 import { ProgramasCursosCreatePage } from "@/features/programas-cursos/pages/programas-cursos-create-page"
+import { ComunicadosListPage } from "@/features/comunicados/pages/comunicados-list-page"
+import { ComunicadosCreatePage } from "@/features/comunicados/pages/comunicados-create-page"
+import { ComunicadosDetailPage } from "@/features/comunicados/pages/comunicados-detail-page"
 
 function App() {
   return (
@@ -42,6 +45,9 @@ function App() {
             <Route path="/programas/:tipoSlug/:slug" element={<ProgramasDetailPage />} />
             <Route path="/programas-cursos" element={<ProgramasCursosListPage />} />
             <Route path="/programas-cursos/crear" element={<ProgramasCursosCreatePage />} />
+            <Route path="/comunicados" element={<ComunicadosListPage />} />
+            <Route path="/comunicados/crear" element={<ComunicadosCreatePage />} />
+            <Route path="/comunicados/:slug" element={<ComunicadosDetailPage />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
