@@ -42,6 +42,16 @@ export function ProgramasDetailPage() {
         ]}
       />
 
+      {programa.imagen && (
+        <Card className="mb-4 overflow-hidden">
+          <img
+            src={programa.imagen}
+            alt={programa.nombre}
+            className="h-48 w-full object-cover"
+          />
+        </Card>
+      )}
+
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
@@ -91,6 +101,30 @@ export function ProgramasDetailPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle className="text-sm font-medium">Información Académica</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <span className="text-xs text-muted-foreground">Objetivo General</span>
+            <p className="text-sm mt-1 whitespace-pre-line">{programa.objetivoGeneral}</p>
+          </div>
+          <div>
+            <span className="text-xs text-muted-foreground">Objetivos Específicos</span>
+            <p className="text-sm mt-1 whitespace-pre-line">{programa.objetivosEspecificos}</p>
+          </div>
+          <div>
+            <span className="text-xs text-muted-foreground">Perfil del Posgraduado</span>
+            <p className="text-sm mt-1 whitespace-pre-line">{programa.perfilPosgraduado}</p>
+          </div>
+          <div>
+            <span className="text-xs text-muted-foreground">Líneas de Investigación</span>
+            <p className="text-sm mt-1 whitespace-pre-line">{programa.lineasInvestigacion}</p>
+          </div>
+        </CardContent>
+      </Card>
 
       <Button variant="outline" className="mt-4" onClick={() => navigate(`/programas/${tipoSlug}`)}>
         <ArrowLeft />

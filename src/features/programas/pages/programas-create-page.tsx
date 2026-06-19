@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Select,
   SelectContent,
@@ -39,6 +40,7 @@ export function ProgramasCreatePage() {
       await crear({
         ...data,
         convocatoria: data.convocatoria ?? false,
+        imagen: data.imagen || undefined,
       })
       toast.success("Programa creado exitosamente")
       navigate("/programas")
@@ -120,6 +122,38 @@ export function ProgramasCreatePage() {
                 onCheckedChange={(v) => setValue("convocatoria", v)}
               />
               <Label htmlFor="convocatoria">Convocatoria abierta</Label>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="imagen">Imagen <span className="text-muted-foreground font-normal">(opcional)</span></Label>
+              <Input id="imagen" placeholder="URL de la imagen" {...register("imagen")} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="objetivoGeneral">Objetivo General</Label>
+              <Textarea id="objetivoGeneral" placeholder="Objetivo general del programa" {...register("objetivoGeneral")} />
+              {errors.objetivoGeneral && (
+                <p className="text-sm text-destructive">{errors.objetivoGeneral.message}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="objetivosEspecificos">Objetivos Específicos</Label>
+              <Textarea id="objetivosEspecificos" placeholder="Objetivos específicos del programa" {...register("objetivosEspecificos")} />
+              {errors.objetivosEspecificos && (
+                <p className="text-sm text-destructive">{errors.objetivosEspecificos.message}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="perfilPosgraduado">Perfil del Posgraduado</Label>
+              <Textarea id="perfilPosgraduado" placeholder="Perfil del posgraduado" {...register("perfilPosgraduado")} />
+              {errors.perfilPosgraduado && (
+                <p className="text-sm text-destructive">{errors.perfilPosgraduado.message}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="lineasInvestigacion">Líneas de Investigación</Label>
+              <Textarea id="lineasInvestigacion" placeholder="Líneas de investigación" {...register("lineasInvestigacion")} />
+              {errors.lineasInvestigacion && (
+                <p className="text-sm text-destructive">{errors.lineasInvestigacion.message}</p>
+              )}
             </div>
             <div className="flex gap-2 pt-2">
               <Button type="submit" disabled={isPending}>

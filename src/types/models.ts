@@ -61,6 +61,11 @@ export interface Programa {
   slug: string
   convocatoria: boolean
   modalidad: Modalidad
+  imagen: string | null
+  objetivoGeneral: string
+  objetivosEspecificos: string
+  perfilPosgraduado: string
+  lineasInvestigacion: string
 }
 
 export interface CrearProgramaRequest {
@@ -69,6 +74,11 @@ export interface CrearProgramaRequest {
   idFacultad: number
   convocatoria?: boolean
   modalidad: Modalidad
+  imagen?: string
+  objetivoGeneral: string
+  objetivosEspecificos: string
+  perfilPosgraduado: string
+  lineasInvestigacion: string
 }
 
 export interface ActualizarProgramaRequest {
@@ -77,6 +87,11 @@ export interface ActualizarProgramaRequest {
   idFacultad: number
   convocatoria?: boolean
   modalidad: Modalidad
+  imagen?: string
+  objetivoGeneral: string
+  objetivosEspecificos: string
+  perfilPosgraduado: string
+  lineasInvestigacion: string
 }
 
 export interface ProgramaCurso {

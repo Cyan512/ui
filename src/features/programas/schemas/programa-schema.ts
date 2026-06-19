@@ -8,6 +8,11 @@ export const programaSchema = z.object({
     message: "Selecciona una modalidad",
   }),
   convocatoria: z.boolean().optional(),
+  imagen: z.string().optional(),
+  objetivoGeneral: z.string().min(1, "El objetivo general es obligatorio"),
+  objetivosEspecificos: z.string().min(1, "Los objetivos específicos son obligatorios"),
+  perfilPosgraduado: z.string().min(1, "El perfil del posgraduado es obligatorio"),
+  lineasInvestigacion: z.string().min(1, "Las líneas de investigación son obligatorias"),
 })
 
 export type ProgramaSchema = z.infer<typeof programaSchema>

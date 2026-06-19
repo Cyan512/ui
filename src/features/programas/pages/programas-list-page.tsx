@@ -7,6 +7,7 @@ import { Eye, Pencil, Plus, Search, Trash2, X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import {
@@ -83,6 +84,7 @@ export function ProgramasListPage() {
       await crear({
         ...data,
         convocatoria: data.convocatoria ?? false,
+        imagen: data.imagen || undefined,
       })
       toast.success("Programa creado exitosamente")
       setCreateOpen(false)
@@ -100,6 +102,7 @@ export function ProgramasListPage() {
         data: {
           ...data,
           convocatoria: data.convocatoria ?? false,
+          imagen: data.imagen || undefined,
         },
       })
       toast.success("Programa actualizado exitosamente")
@@ -129,6 +132,11 @@ export function ProgramasListPage() {
       idFacultad: programa.idFacultad.id,
       modalidad: programa.modalidad,
       convocatoria: programa.convocatoria,
+      imagen: programa.imagen ?? "",
+      objetivoGeneral: programa.objetivoGeneral,
+      objetivosEspecificos: programa.objetivosEspecificos,
+      perfilPosgraduado: programa.perfilPosgraduado,
+      lineasInvestigacion: programa.lineasInvestigacion,
     })
   }
 
@@ -404,6 +412,38 @@ export function ProgramasListPage() {
             />
             <Label htmlFor="create-convocatoria">Convocatoria abierta</Label>
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-imagen">Imagen <span className="text-muted-foreground font-normal">(opcional)</span></Label>
+            <Input id="create-imagen" placeholder="URL de la imagen" {...register("imagen")} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-objetivoGeneral">Objetivo General</Label>
+            <Textarea id="create-objetivoGeneral" placeholder="Objetivo general del programa" {...register("objetivoGeneral")} />
+            {errors.objetivoGeneral && (
+              <p className="text-sm text-destructive">{errors.objetivoGeneral.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-objetivosEspecificos">Objetivos Específicos</Label>
+            <Textarea id="create-objetivosEspecificos" placeholder="Objetivos específicos del programa" {...register("objetivosEspecificos")} />
+            {errors.objetivosEspecificos && (
+              <p className="text-sm text-destructive">{errors.objetivosEspecificos.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-perfilPosgraduado">Perfil del Posgraduado</Label>
+            <Textarea id="create-perfilPosgraduado" placeholder="Perfil del posgraduado" {...register("perfilPosgraduado")} />
+            {errors.perfilPosgraduado && (
+              <p className="text-sm text-destructive">{errors.perfilPosgraduado.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="create-lineasInvestigacion">Líneas de Investigación</Label>
+            <Textarea id="create-lineasInvestigacion" placeholder="Líneas de investigación" {...register("lineasInvestigacion")} />
+            {errors.lineasInvestigacion && (
+              <p className="text-sm text-destructive">{errors.lineasInvestigacion.message}</p>
+            )}
+          </div>
           <div className="flex gap-2 pt-2">
             <Button type="submit" disabled={isCreating}>
               {isCreating ? "Guardando..." : "Guardar"}
@@ -497,6 +537,38 @@ export function ProgramasListPage() {
               onCheckedChange={(v) => setValue("convocatoria", v)}
             />
             <Label htmlFor="edit-convocatoria">Convocatoria abierta</Label>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-imagen">Imagen <span className="text-muted-foreground font-normal">(opcional)</span></Label>
+            <Input id="edit-imagen" placeholder="URL de la imagen" {...register("imagen")} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-objetivoGeneral">Objetivo General</Label>
+            <Textarea id="edit-objetivoGeneral" placeholder="Objetivo general del programa" {...register("objetivoGeneral")} />
+            {errors.objetivoGeneral && (
+              <p className="text-sm text-destructive">{errors.objetivoGeneral.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-objetivosEspecificos">Objetivos Específicos</Label>
+            <Textarea id="edit-objetivosEspecificos" placeholder="Objetivos específicos del programa" {...register("objetivosEspecificos")} />
+            {errors.objetivosEspecificos && (
+              <p className="text-sm text-destructive">{errors.objetivosEspecificos.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-perfilPosgraduado">Perfil del Posgraduado</Label>
+            <Textarea id="edit-perfilPosgraduado" placeholder="Perfil del posgraduado" {...register("perfilPosgraduado")} />
+            {errors.perfilPosgraduado && (
+              <p className="text-sm text-destructive">{errors.perfilPosgraduado.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-lineasInvestigacion">Líneas de Investigación</Label>
+            <Textarea id="edit-lineasInvestigacion" placeholder="Líneas de investigación" {...register("lineasInvestigacion")} />
+            {errors.lineasInvestigacion && (
+              <p className="text-sm text-destructive">{errors.lineasInvestigacion.message}</p>
+            )}
           </div>
           <div className="flex gap-2 pt-2">
             <Button type="submit" disabled={isUpdating}>
