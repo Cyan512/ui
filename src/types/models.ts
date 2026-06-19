@@ -55,17 +55,18 @@ export interface ActualizarCursoRequest {
 
 export interface Programa {
   id: number
-  idTipoPrograma: TipoPrograma
   nombre: string
-  idFacultad: Facultad
   slug: string
-  convocatoria: boolean
-  modalidad: Modalidad
   imagen: string | null
+  convocatoria: boolean
   objetivoGeneral: string
   objetivosEspecificos: string
   perfilPosgraduado: string
+  idFacultad: Facultad
+  idTipoPrograma: TipoPrograma
+  modalidad: Modalidad
   lineasInvestigacion: string
+  costoMatricula:number
 }
 
 export interface CrearProgramaRequest {
@@ -96,15 +97,17 @@ export interface ActualizarProgramaRequest {
 
 export interface ProgramaCurso {
   id: number
+  semestre: number
+  electivo: boolean
+  costoCuota: number
   idPrograma: { id: number; nombre: string; slug: string }
   idCurso: { id: number; nombre: string; creditos: number; categoria: Categoria }
-  semestres: string
 }
 
 export interface CrearProgramaCursoRequest {
   idPrograma: number
   idCurso: number
-  semestres: string
+  semestre: string
 }
 
 export interface Comunicado {

@@ -43,11 +43,12 @@ export function ProgramasCursosListPage() {
   const { mutateAsync: eliminar, isPending: isDeleting } = useEliminarProgramaCurso()
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { handleSubmit, setValue, reset, formState: { errors } } = useForm<ProgramaCursoSchema>({
+  const { handleSubmit, setValue, reset, register, formState: { errors } } = useForm<ProgramaCursoSchema>({
     resolver: zodResolver(programaCursoSchema) as any,
   })
 
   async function onCreate(data: ProgramaCursoSchema) {
+    console.log("DATA QUE ENVÍA EL FRONT:", data)
     try {
       await crear(data)
       toast.success("Asociación creada exitosamente")
@@ -57,6 +58,7 @@ export function ProgramasCursosListPage() {
       toast.error("Error al crear la asociación")
     }
   }
+
 
   async function onDelete() {
     if (!deleteItem) return
@@ -79,7 +81,7 @@ export function ProgramasCursosListPage() {
       header: "Curso",
       accessorFn: (row) => row.idCurso.nombre,
     },
-    { header: "Semestre(s)", accessorKey: "semestres" },
+    { header: "Semestre(s)", accessorKey: "semestre" },
     {
       header: "Acciones",
       accessorFn: () => null,
@@ -176,14 +178,28 @@ export function ProgramasCursosListPage() {
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="semestres">Semestre(s)</Label>
+            <Label htmlFor="semestre">Semestre(s)</Label>
             <Input
-              id="semestres"
+              id="semestre"
               placeholder="Ej: I, II, III"
-              onChange={(e) => setValue("semestres", e.target.value)}
+              onChange={(e) => setValue("semestre", e.target.value)}
             />
-            {errors.semestres && (
-              <p className="text-sm text-destructive">{errors.semestres.message}</p>
+            {errors.semestre && (
+              <p className="text-sm text-destructive">{errors.semestre.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="costo-cuota">Costo del curso en el programa</Label>
+            <Input
+              id="costo-cuota"
+              placeholder="500"
+              type="number"
+              {...register("costoCuota")}
+            />
+            {errors.costoCuota && (
+              <p className="text-sm text-destructive">
+                {errors.costoCuota.message}
+              </p>
             )}
           </div>
           <div className="flex gap-2 pt-2">

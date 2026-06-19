@@ -137,6 +137,7 @@ export function ProgramasListPage() {
       objetivosEspecificos: programa.objetivosEspecificos,
       perfilPosgraduado: programa.perfilPosgraduado,
       lineasInvestigacion: programa.lineasInvestigacion,
+      costoMatricula: programa.costoMatricula?.toString(),
     })
   }
 
@@ -358,6 +359,13 @@ export function ProgramasListPage() {
             )}
           </div>
           <div className="space-y-2">
+            <Label htmlFor="costo-matricula">Costo Matricula</Label>
+            <Input id="costo-matricual" placeholder="400.00" {...register("costoMatricula")}/>
+            {errors.costoMatricula && (
+              <p className="text-sm text-destructive">{errors.costoMatricula.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
             <Label htmlFor="create-idTipoPrograma">Tipo de Programa</Label>
             <Select onValueChange={(v) => setValue("idTipoPrograma", Number(v))}>
               <SelectTrigger>
@@ -471,6 +479,13 @@ export function ProgramasListPage() {
             />
             {errors.nombre && (
               <p className="text-sm text-destructive">{errors.nombre.message}</p>
+            )}
+          </div>
+           <div className="space-y-2">
+            <Label htmlFor="costo-matricula">Costo Matricula</Label>
+            <Input id="costo-matricual" placeholder="400.00" {...register("costoMatricula")}/>
+            {errors.costoMatricula && (
+              <p className="text-sm text-destructive">{errors.costoMatricula.message}</p>
             )}
           </div>
           <div className="space-y-2">
